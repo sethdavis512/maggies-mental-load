@@ -102,6 +102,53 @@ To add your own tools, follow the pattern in `agents.ts` — define a `createToo
 ## Troubleshooting
 
 - Chat/tool-calling duplicate provider item IDs (`fc_*`): see [docs/chat-tool-calling.md](docs/chat-tool-calling.md)
+- Deployment process and runbook: see [docs/iridium-delivery-system.md](docs/iridium-delivery-system.md)
+
+## Automated screenshot updates to Linear
+
+This repo supports an automated screenshot pipeline using Playwright and Linear.
+
+- Screenshots are captured into dated + unique run folders:
+  `screenshots/runs/YYYY-MM-DD/<human-id>/`
+- `human-id` uses the requested format (`separator: '-'`, `capitalize: false`)
+  and looks like `rare-geckos-jam`.
+- A script posts markdown image embeds to a Linear issue comment.
+
+### Local commands
+
+```bash
+bun run screenshots:capture
+bun run screenshots:post:linear
+```
+
+Or run both:
+
+```bash
+bun run screenshots:capture-and-post
+```
+
+Required env vars:
+
+- `LINEAR_API_KEY`
+- `LINEAR_ISSUE_ID` (Linear issue UUID)
+
+Optional:
+
+- `SCREENSHOT_GITHUB_BRANCH` (defaults to `main`)
+- `SCREENSHOT_GITHUB_OWNER` + `SCREENSHOT_GITHUB_REPO` (only needed outside
+  GitHub Actions if `GITHUB_REPOSITORY` is unavailable)
+
+### GitHub Actions workflow
+
+Use `.github/workflows/linear-screenshot-update.yml` via `workflow_dispatch`.
+
+Inputs:
+
+- `linearIssueId`: target Linear issue UUID
+- `branch`: branch to publish links from (default `main`)
+
+The workflow captures screenshots, commits/pushes `screenshots/runs/**`, then
+posts an update comment to the provided Linear issue.
 
 ## Building for Production
 

@@ -9,6 +9,12 @@
             "command": "npx",
             "args": ["-y", "@voltagent/docs-mcp"],
             "type": "stdio"
+        },
+        "Linear": {
+            "type": "stdio",
+            "command": "npx",
+            "args": ["mcp-remote", "https://mcp.linear.app/mcp"]
         }
-    }
+    },
+    "inputs": []
 }

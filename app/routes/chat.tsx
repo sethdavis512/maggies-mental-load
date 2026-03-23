@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Container } from '~/components/Container';
 import { authMiddleware } from '~/middleware/auth';
 import { listItemClassName, navLinkClassName } from '~/shared';
@@ -11,7 +11,14 @@ import {
 } from '~/models/thread.server';
 import { getUserFromSession } from '~/models/session.server';
 import invariant from 'tiny-invariant';
-import { Form, NavLink, Outlet, redirect, useNavigation } from 'react-router';
+import {
+    Form,
+    NavLink,
+    Outlet,
+    redirect,
+    useNavigation,
+    useSubmit,
+} from 'react-router';
 import { LoaderCircleIcon, PlusCircleIcon, Trash2Icon } from 'lucide-react';
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
@@ -85,7 +92,8 @@ function getThreadLabel(thread: {
 
 export default function ChatRoute({ loaderData }: Route.ComponentProps) {
     const navigation = useNavigation();
-    const dialogRef = useRef<HTMLDialogElement>(null);
+    const submit = useSubmit();
+    const [isConfirmOpen, setConfirmOpen] = useState(false);
     const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
 
     const formData = navigation.formData;
@@ -98,47 +106,59 @@ export default function ChatRoute({ loaderData }: Route.ComponentProps) {
 
     function openDeleteDialog(threadId: string) {
         setPendingDeleteId(threadId);
-        dialogRef.current?.showModal();
+        setConfirmOpen(true);
     }
 
     function closeDeleteDialog() {
-        dialogRef.current?.close();
+        setConfirmOpen(false);
         setPendingDeleteId(null);
     }
 
     return (
         <>
             <title>Chat | maggies-mental-load</title>
-            <meta name="description" content="This is the chat page" />
-            <Container className="flex h-full flex-col gap-4 p-4">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="mb-4 text-4xl font-bold">Chat</h1>
+            <meta
+                name="description"
+                content="Capture thoughts, organize priorities, and turn overwhelm into actionable household plans."
+            />
+            <Container className="flex h-full flex-col gap-4 p-2 md:p-3">
+                <header className="border-kraft/10 flex flex-col gap-3 border-b pb-6 sm:flex-row sm:items-start sm:justify-between">
+                    <div className="space-y-1">
+                        <span className="badge badge-info badge-outline">
+                            Private workspace
+                        </span>
+                        <h1 className="font-display text-kraft text-3xl font-semibold">
+                            Plan with Maggie
+                        </h1>
+                        <p className="text-kraft/65 text-sm">
+                            Bring the mental load in here, then leave with clear
+                            next steps.
+                        </p>
                     </div>
                     <Form method="POST">
                         <input type="hidden" name="intent" value="new-thread" />
                         <button
-                            className="btn btn-accent"
                             type="submit"
                             disabled={isCreating}
+                            className="btn btn-primary btn-sm"
                         >
                             {isCreating ? (
                                 <LoaderCircleIcon
                                     aria-hidden="true"
-                                    className="mr-2 h-6 w-6 animate-spin"
+                                    className="h-4 w-4 animate-spin"
                                 />
                             ) : (
                                 <PlusCircleIcon
                                     aria-hidden="true"
-                                    className="mr-2 h-6 w-6"
+                                    className="h-4 w-4"
                                 />
                             )}
-                            New Thread
+                            New thread
                         </button>
                     </Form>
-                </div>
+                </header>
                 <div className="grid min-h-0 grow grid-cols-1 grid-rows-[auto_1fr] gap-4 md:grid-cols-12 md:grid-rows-none">
-                    <div className="col-span-1 overflow-y-auto md:col-span-5 lg:col-span-4">
+                    <section className="border-kraft/12 bg-canvas rounded-box col-span-1 overflow-y-auto border p-3 md:col-span-5 lg:col-span-4">
                         <nav aria-label="Conversations">
                             <ul className="flex flex-col gap-4">
                                 {loaderData.threads &&
@@ -159,7 +179,7 @@ export default function ChatRoute({ loaderData }: Route.ComponentProps) {
                                             <button
                                                 type="button"
                                                 aria-label="Delete thread"
-                                                className="btn btn-ghost btn-xs text-error absolute top-1/2 right-2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100"
+                                                className="absolute top-1/2 right-2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100"
                                                 disabled={
                                                     deletingThreadId ===
                                                     thread.id
@@ -172,63 +192,59 @@ export default function ChatRoute({ loaderData }: Route.ComponentProps) {
                                                 thread.id ? (
                                                     <LoaderCircleIcon className="h-4 w-4 animate-spin" />
                                                 ) : (
-                                                    <Trash2Icon className="h-4 w-4" />
+                                                    <Trash2Icon className="text-spool h-4 w-4" />
                                                 )}
                                             </button>
                                         </li>
                                     ))
                                 ) : (
                                     <li className={listItemClassName}>
-                                        No threads found
+                                        No conversations yet. Start one to get
+                                        organized fast.
                                     </li>
                                 )}
                             </ul>
                         </nav>
-                    </div>
+                    </section>
                     <div className="col-span-1 flex min-h-0 flex-col gap-4 overflow-hidden md:col-span-7 lg:col-span-8">
                         <Outlet />
                     </div>
                 </div>
             </Container>
-
             <dialog
-                ref={dialogRef}
+                open={isConfirmOpen}
                 className="modal"
-                onClose={() => setPendingDeleteId(null)}
+                onClose={closeDeleteDialog}
             >
                 <div className="modal-box">
-                    <h3 className="text-lg font-bold">Delete thread</h3>
-                    <p className="py-4">
-                        This will permanently delete this conversation and all
-                        its messages. This cannot be undone.
+                    <h3 className="font-display text-kraft text-lg font-semibold">
+                        Delete this conversation?
+                    </h3>
+                    <p className="text-kraft/70 py-3 text-sm">
+                        This permanently removes the thread and its messages.
                     </p>
                     <div className="modal-action">
-                        <button
-                            type="button"
-                            className="btn"
-                            onClick={closeDeleteDialog}
-                        >
-                            Cancel
+                        <button className="btn" onClick={closeDeleteDialog}>
+                            Keep conversation
                         </button>
-                        <Form method="POST" onSubmit={closeDeleteDialog}>
-                            <input
-                                type="hidden"
-                                name="intent"
-                                value="delete-thread"
-                            />
-                            <input
-                                type="hidden"
-                                name="threadId"
-                                value={pendingDeleteId ?? ''}
-                            />
-                            <button type="submit" className="btn btn-error">
-                                Delete
-                            </button>
-                        </Form>
+                        <button
+                            className="btn btn-error"
+                            onClick={() => {
+                                const form = new FormData();
+                                form.set('intent', 'delete-thread');
+                                form.set('threadId', pendingDeleteId ?? '');
+                                submit(form, { method: 'POST' });
+                                closeDeleteDialog();
+                            }}
+                        >
+                            Delete conversation
+                        </button>
                     </div>
                 </div>
                 <form method="dialog" className="modal-backdrop">
-                    <button type="submit">close</button>
+                    <button type="submit" onClick={closeDeleteDialog}>
+                        close
+                    </button>
                 </form>
             </dialog>
         </>

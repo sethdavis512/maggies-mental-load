@@ -165,26 +165,30 @@ export default function ThreadRoute({
         <>
             {error && (
                 <div role="alert" className="alert alert-error">
-                    <CircleXIcon aria-hidden="true" className="h-6 w-6" />
-                    <span>Something went wrong.</span>
-                    <div className="flex gap-1">
-                        <button
-                            className="btn btn-sm"
-                            onClick={() => regenerate()}
-                        >
-                            <RefreshCwIcon
-                                aria-hidden="true"
-                                className="h-4 w-4"
-                            />
-                            Retry
-                        </button>
-                        <button
-                            className="btn btn-ghost btn-sm"
-                            onClick={() => clearError()}
-                        >
-                            <XIcon aria-hidden="true" className="h-4 w-4" />
-                            Dismiss
-                        </button>
+                    <CircleXIcon aria-hidden="true" className="h-5 w-5" />
+                    <div className="flex w-full items-center justify-between gap-2">
+                        <span>
+                            We hit a snag loading this response. Try again.
+                        </span>
+                        <div className="flex gap-1">
+                            <button
+                                className="btn btn-sm"
+                                onClick={() => regenerate()}
+                            >
+                                <RefreshCwIcon
+                                    aria-hidden="true"
+                                    className="h-4 w-4"
+                                />
+                                Retry
+                            </button>
+                            <button
+                                className="btn btn-ghost btn-sm"
+                                onClick={() => clearError()}
+                            >
+                                <XIcon aria-hidden="true" className="h-4 w-4" />
+                                Dismiss
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
@@ -276,8 +280,16 @@ export default function ThreadRoute({
                         );
                     })
                 ) : (
-                    <div className="text-center text-gray-500">
-                        No messages yet
+                    <div className="border-kraft/12 bg-canvas rounded-box mx-auto mt-auto max-w-md border p-4 text-center">
+                        <div className="space-y-2">
+                            <span className="badge badge-warning badge-outline">
+                                Ready when you are
+                            </span>
+                            <p className="text-kraft/70 text-sm">
+                                Start with one sentence. Maggie will help you
+                                turn it into a plan.
+                            </p>
+                        </div>
                     </div>
                 )}
             </div>
@@ -287,7 +299,7 @@ export default function ThreadRoute({
                         <button
                             key={label}
                             type="button"
-                            className="btn btn-content rounded-box btn-xs"
+                            className="btn btn-content btn-xs rounded-full"
                             onClick={() => sendMessage({ text: value })}
                             disabled={status !== 'ready'}
                             title={value}
@@ -301,8 +313,8 @@ export default function ThreadRoute({
                         id="chat-message-input"
                         type="text"
                         aria-label="Message"
-                        className="input rounded-field grow"
-                        placeholder="Your message here..."
+                        className="input rounded-field bg-canvas grow"
+                        placeholder="What’s on your mind right now?"
                         value={chatInput}
                         onChange={(e) => setChatInput(e.target.value)}
                         onKeyDown={(e) => {
@@ -314,7 +326,7 @@ export default function ThreadRoute({
                         disabled={status !== 'ready'}
                     />
                     <button
-                        className="btn btn-default"
+                        className="btn btn-sm"
                         onClick={stop}
                         disabled={
                             status !== 'streaming' && status !== 'submitted'
@@ -324,10 +336,10 @@ export default function ThreadRoute({
                             aria-hidden="true"
                             className="h-6 w-6"
                         />{' '}
-                        Stop
+                        Pause
                     </button>
                     <button
-                        className="btn btn-secondary"
+                        className="btn btn-primary btn-sm"
                         onClick={handleSend}
                         disabled={status !== 'ready'}
                     >

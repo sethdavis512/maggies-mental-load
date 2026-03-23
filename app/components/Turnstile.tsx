@@ -75,133 +75,165 @@ export function Turnstile() {
                 name="description"
                 content={
                     isSignIn
-                        ? 'Access your maggies-mental-load account with your email and password.'
+                        ? 'Sign in to continue managing your household plans.'
                         : 'Create your maggies-mental-load account to explore the SaaS starter kit.'
                 }
             />
-            <div className="p-4">
-                <h2 className="mb-8 text-3xl font-bold">Authenticate</h2>
-                {formError && (
-                    <div role="alert" className="alert alert-error mb-4">
-                        <CircleXIcon aria-hidden="true" className="h-6 w-6" />
-                        <span>{formError}</span>
+            <div className="mx-auto w-full max-w-md p-2 md:p-4">
+                <div className="border-kraft/12 bg-surface rounded-box border p-6">
+                    <div className="space-y-2 pb-2">
+                        <span className="badge badge-warning badge-outline w-fit">
+                            Private and secure
+                        </span>
+                        <h2 className="font-display text-2xl">
+                            {isSignIn ? 'Welcome back' : 'Create your account'}
+                        </h2>
+                        <p className="text-kraft/65 text-sm">
+                            {isSignIn
+                                ? 'Pick up where you left off.'
+                                : 'Start organizing your household with less mental clutter.'}
+                        </p>
                     </div>
-                )}
-                <div>
-                    <div className="join mb-4">
-                        <input
-                            className="join-item btn"
-                            type="radio"
-                            name="loginOptions"
-                            aria-label="Login"
-                            onChange={toggleSignIn}
-                            disabled={isSubmitting}
-                            defaultChecked
-                        />
-                        <input
-                            className="join-item btn"
-                            type="radio"
-                            name="loginOptions"
-                            aria-label="Register"
-                            onChange={toggleSignIn}
-                            disabled={isSubmitting}
-                        />
-                    </div>
-                    <form
-                        onSubmit={handleSubmit(onSubmit)}
-                        className="space-y-4"
-                    >
-                        {!isSignIn && (
-                            <fieldset
-                                className="fieldset"
-                                disabled={isSubmitting}
+                    <div>
+                        {formError && (
+                            <div
+                                role="alert"
+                                className="alert alert-error mb-4"
                             >
-                                <legend className="fieldset-legend">
-                                    Name
-                                </legend>
-                                <input
-                                    type="text"
-                                    className="input"
-                                    placeholder="Your name"
-                                    aria-describedby={
-                                        errors.name ? 'name-error' : undefined
-                                    }
-                                    {...register('name')}
+                                <CircleXIcon
+                                    aria-hidden="true"
+                                    className="h-6 w-6"
                                 />
-                                {errors.name && (
-                                    <p
-                                        id="name-error"
-                                        className="text-error text-sm"
-                                    >
-                                        {errors.name.message}
-                                    </p>
-                                )}
-                            </fieldset>
+                                <span>{formError}</span>
+                            </div>
                         )}
-                        <fieldset className="fieldset" disabled={isSubmitting}>
-                            <legend className="fieldset-legend">
-                                Email address
-                            </legend>
-                            <input
-                                type="email"
-                                className="input"
-                                placeholder="name@example.com"
-                                aria-describedby={
-                                    errors.email ? 'email-error' : undefined
-                                }
-                                {...register('email')}
-                            />
-                            {errors.email && (
-                                <p
-                                    id="email-error"
-                                    className="text-error text-sm"
-                                >
-                                    {errors.email.message}
-                                </p>
-                            )}
-                        </fieldset>
-                        <fieldset className="fieldset" disabled={isSubmitting}>
-                            <legend className="fieldset-legend">
-                                Password
-                            </legend>
-                            <input
-                                type="password"
-                                className="input"
-                                placeholder="Your password"
-                                aria-describedby={
-                                    errors.password
-                                        ? 'password-error'
-                                        : undefined
-                                }
-                                {...register('password')}
-                            />
-                            {errors.password && (
-                                <p
-                                    id="password-error"
-                                    className="text-error text-sm"
-                                >
-                                    {errors.password.message}
-                                </p>
-                            )}
-                        </fieldset>
-                        <button
-                            className="btn btn-accent"
-                            type="submit"
-                            disabled={isSubmitting}
-                        >
-                            {isSubmitting ? (
-                                <span
-                                    role="status"
-                                    aria-label="Loading"
-                                    className="loading loading-spinner loading-sm"
+                        <div>
+                            <div className="join mb-4">
+                                <input
+                                    className="join-item btn"
+                                    type="radio"
+                                    name="loginOptions"
+                                    aria-label="Login"
+                                    onChange={toggleSignIn}
+                                    disabled={isSubmitting}
+                                    defaultChecked
                                 />
-                            ) : isSignIn ? (
-                                'Login'
-                            ) : (
-                                'Register'
-                            )}
-                        </button>
-                    </form>
+                                <input
+                                    className="join-item btn"
+                                    type="radio"
+                                    name="loginOptions"
+                                    aria-label="Register"
+                                    onChange={toggleSignIn}
+                                    disabled={isSubmitting}
+                                />
+                            </div>
+                            <form
+                                onSubmit={handleSubmit(onSubmit)}
+                                className="space-y-4"
+                            >
+                                {!isSignIn && (
+                                    <fieldset
+                                        className="fieldset"
+                                        disabled={isSubmitting}
+                                    >
+                                        <legend className="fieldset-legend">
+                                            Name
+                                        </legend>
+                                        <input
+                                            type="text"
+                                            className="input"
+                                            placeholder="What should Maggie call you?"
+                                            aria-describedby={
+                                                errors.name
+                                                    ? 'name-error'
+                                                    : undefined
+                                            }
+                                            {...register('name')}
+                                        />
+                                        {errors.name && (
+                                            <p
+                                                id="name-error"
+                                                className="text-error text-sm"
+                                            >
+                                                {errors.name.message}
+                                            </p>
+                                        )}
+                                    </fieldset>
+                                )}
+                                <fieldset
+                                    className="fieldset"
+                                    disabled={isSubmitting}
+                                >
+                                    <legend className="fieldset-legend">
+                                        Email address
+                                    </legend>
+                                    <input
+                                        type="email"
+                                        className="input"
+                                        placeholder="you@example.com"
+                                        aria-describedby={
+                                            errors.email
+                                                ? 'email-error'
+                                                : undefined
+                                        }
+                                        {...register('email')}
+                                    />
+                                    {errors.email && (
+                                        <p
+                                            id="email-error"
+                                            className="text-error text-sm"
+                                        >
+                                            {errors.email.message}
+                                        </p>
+                                    )}
+                                </fieldset>
+                                <fieldset
+                                    className="fieldset"
+                                    disabled={isSubmitting}
+                                >
+                                    <legend className="fieldset-legend">
+                                        Password
+                                    </legend>
+                                    <input
+                                        type="password"
+                                        className="input"
+                                        placeholder="At least 8 characters"
+                                        aria-describedby={
+                                            errors.password
+                                                ? 'password-error'
+                                                : undefined
+                                        }
+                                        {...register('password')}
+                                    />
+                                    {errors.password && (
+                                        <p
+                                            id="password-error"
+                                            className="text-error text-sm"
+                                        >
+                                            {errors.password.message}
+                                        </p>
+                                    )}
+                                </fieldset>
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary"
+                                    disabled={isSubmitting}
+                                >
+                                    {isSubmitting ? (
+                                        <span
+                                            role="status"
+                                            aria-label="Loading"
+                                            className="loading loading-spinner loading-sm"
+                                        />
+                                    ) : isSignIn ? (
+                                        'Login'
+                                    ) : (
+                                        'Register'
+                                    )}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>

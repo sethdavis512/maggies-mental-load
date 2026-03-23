@@ -24,14 +24,12 @@ import {
     LogOutIcon,
     MenuIcon,
     MessageSquareIcon,
-    PentagonIcon,
     StickyNoteIcon,
     UserCircle2Icon,
 } from 'lucide-react';
 import { getUserFromSession } from '~/models/session.server';
 import type { Route } from './+types/root';
 import { Container } from './components/Container';
-import { Card } from './components/Card';
 import { listItemClassName, navLinkClassName } from './shared';
 import { Drawer } from './components/Drawer';
 
@@ -46,7 +44,7 @@ export const links: Route.LinksFunction = () => [
     },
     {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Plus+Jakarta+Sans:wght@400..700&display=swap',
     },
 ];
 
@@ -240,22 +238,26 @@ export default function App({ loaderData }: Route.ComponentProps) {
             >
                 Skip to main content
             </a>
-            <header className="mb-4 shrink-0">
+            <header className="shrink-0">
                 <nav
                     aria-label="Site"
-                    className="bg-neutral text-neutral-content py-4"
+                    className="bg-base-100/95 border-kraft/12 border-b py-4 backdrop-blur-sm"
                 >
                     <Container className="flex items-center justify-between">
-                        <ul className="flex gap-4 px-4">
+                        <ul className="flex gap-4 lg:gap-0 px-4 lg:px-0">
                             <li>
-                                <Link to="/" className="flex gap-2">
-                                    <PentagonIcon
-                                        aria-hidden="true"
-                                        className="h-6 w-6"
-                                    />
-                                    <strong className="font-bold">
-                                        maggies-mental-load
-                                    </strong>
+                                <Link
+                                    to="/"
+                                    className="hover:bg-kraft/6 flex items-center gap-2.5 rounded-full py-1 transition-colors"
+                                >
+                                    <div className="flex flex-col leading-tight">
+                                        <strong className="font-display text-kraft text-[1.05rem] font-semibold tracking-tight">
+                                            Maggie&apos;s Mental Load
+                                        </strong>
+                                        <span className="text-kraft/55 text-[11px] font-medium tracking-wide uppercase">
+                                            Mental Load, Managed.
+                                        </span>
+                                    </div>
                                 </Link>
                             </li>
                         </ul>
@@ -267,7 +269,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
                                 aria-hidden={!showLoading}
                             />
                         </div>
-                        <ul className="hidden gap-4 px-4 md:flex">
+                        <ul className="hidden items-center gap-2 px-4 md:flex">
                             {loaderData.isAuthenticated && (
                                 <>
                                     <li>
@@ -283,15 +285,13 @@ export default function App({ loaderData }: Route.ComponentProps) {
                                             />
                                             <button
                                                 type="submit"
-                                                className="flex gap-2"
+                                                className="btn btn-sm rounded-full"
                                             >
                                                 <LogOutIcon
                                                     aria-hidden="true"
-                                                    className="h-6 w-6"
+                                                    className="h-4 w-4"
                                                 />
-                                                <strong className="font-bold">
-                                                    Logout
-                                                </strong>
+                                                Sign out
                                             </button>
                                         </Form>
                                     </li>
@@ -299,14 +299,15 @@ export default function App({ loaderData }: Route.ComponentProps) {
                             )}
                             {!loaderData.isAuthenticated && (
                                 <li>
-                                    <Link to="/login" className="flex gap-2">
+                                    <Link
+                                        to="/login"
+                                        className="btn btn-primary btn-sm rounded-full"
+                                    >
                                         <LockIcon
                                             aria-hidden="true"
-                                            className="h-6 w-6"
+                                            className="h-4 w-4"
                                         />
-                                        <strong className="font-bold">
-                                            Login
-                                        </strong>
+                                        Sign in
                                     </Link>
                                 </li>
                             )}
@@ -327,88 +328,101 @@ export default function App({ loaderData }: Route.ComponentProps) {
             <main
                 id="main-content"
                 tabIndex={-1}
-                className="min-h-0 grow overflow-hidden"
+                className="bg-canvas min-h-0 grow overflow-hidden py-4"
             >
                 <Container className="grid h-full grid-cols-1 gap-4 md:grid-cols-12">
-                    <Card className="hidden md:col-span-4 md:block lg:col-span-3">
-                        <nav aria-label="Main navigation">
-                            <ul className="flex flex-col gap-4 p-4">
-                                <li>
-                                    <NavLink
-                                        to="/"
-                                        className={navLinkClassName}
-                                    >
-                                        <HomeIcon
-                                            aria-hidden="true"
-                                            className="h-6 w-6"
-                                        />
-                                        Home
-                                    </NavLink>
-                                </li>
-                                {loaderData.isAuthenticated && (
-                                    <>
-                                        <li>
-                                            <NavLink
-                                                to="/profile"
-                                                className={navLinkClassName}
-                                            >
-                                                <UserCircle2Icon
-                                                    aria-hidden="true"
-                                                    className="h-6 w-6"
-                                                />
-                                                Profile
-                                            </NavLink>
-                                        </li>
-                                        <li>
-                                            <NavLink
-                                                to="/chat"
-                                                className={navLinkClassName}
-                                            >
-                                                <MessageSquareIcon
-                                                    aria-hidden="true"
-                                                    className="h-6 w-6"
-                                                />
-                                                Chat
-                                            </NavLink>
-                                        </li>
-                                        <li>
-                                            <NavLink
-                                                to="/notes"
-                                                className={navLinkClassName}
-                                            >
-                                                <StickyNoteIcon
-                                                    aria-hidden="true"
-                                                    className="h-6 w-6"
-                                                />
-                                                Notes
-                                            </NavLink>
-                                        </li>
-                                        <li>
-                                            <NavLink
-                                                to="/form"
-                                                className={navLinkClassName}
-                                            >
-                                                <FormIcon
-                                                    aria-hidden="true"
-                                                    className="h-6 w-6"
-                                                />
-                                                Form
-                                            </NavLink>
-                                        </li>
-                                    </>
-                                )}
-                            </ul>
-                        </nav>
-                    </Card>
-                    <Card className="col-span-1 min-h-0 overflow-y-auto md:col-span-8 lg:col-span-9">
-                        <Outlet />
-                    </Card>
+                    <div className="border-kraft/12 bg-surface rounded-box hidden border md:col-span-4 md:block lg:col-span-3">
+                        <div className="p-3 md:p-4">
+                            <div className="mb-3 flex items-center justify-between">
+                                <p className="text-kraft/55 text-xs font-semibold tracking-[0.14em] uppercase">
+                                    Daily Dashboard
+                                </p>
+                                <span className="badge badge-warning badge-outline">
+                                    Today
+                                </span>
+                            </div>
+                            <nav aria-label="Main navigation">
+                                <ul className="flex flex-col gap-4 p-4">
+                                    <li>
+                                        <NavLink
+                                            to="/"
+                                            className={navLinkClassName}
+                                        >
+                                            <HomeIcon
+                                                aria-hidden="true"
+                                                className="h-6 w-6"
+                                            />
+                                            Home
+                                        </NavLink>
+                                    </li>
+                                    {loaderData.isAuthenticated && (
+                                        <>
+                                            <li>
+                                                <NavLink
+                                                    to="/profile"
+                                                    className={navLinkClassName}
+                                                >
+                                                    <UserCircle2Icon
+                                                        aria-hidden="true"
+                                                        className="h-6 w-6"
+                                                    />
+                                                    Profile
+                                                </NavLink>
+                                            </li>
+                                            <li>
+                                                <NavLink
+                                                    to="/chat"
+                                                    className={navLinkClassName}
+                                                >
+                                                    <MessageSquareIcon
+                                                        aria-hidden="true"
+                                                        className="h-6 w-6"
+                                                    />
+                                                    Chat
+                                                </NavLink>
+                                            </li>
+                                            <li>
+                                                <NavLink
+                                                    to="/notes"
+                                                    className={navLinkClassName}
+                                                >
+                                                    <StickyNoteIcon
+                                                        aria-hidden="true"
+                                                        className="h-6 w-6"
+                                                    />
+                                                    Notes
+                                                </NavLink>
+                                            </li>
+                                            <li>
+                                                <NavLink
+                                                    to="/form"
+                                                    className={navLinkClassName}
+                                                >
+                                                    <FormIcon
+                                                        aria-hidden="true"
+                                                        className="h-6 w-6"
+                                                    />
+                                                    Form
+                                                </NavLink>
+                                            </li>
+                                        </>
+                                    )}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div className="border-kraft/12 bg-surface rounded-box col-span-1 min-h-0 overflow-y-auto border md:col-span-8 lg:col-span-9">
+                        <div className="min-h-0 p-4 md:p-6">
+                            <Outlet />
+                        </div>
+                    </div>
                 </Container>
             </main>
-            <footer className="bg-base-300 mt-4 shrink-0 py-4">
+            <footer className="border-kraft/10 bg-surface shrink-0 border-t py-4">
                 <Container className="px-4">
-                    <p className="text-base-content">
-                        maggies-mental-load. Go build. Be bold.
+                    <p className="text-kraft/65 text-sm">
+                        Built for real households, real calendars, and real-life
+                        chaos. Check that off your list. ✓
                     </p>
                 </Container>
             </footer>

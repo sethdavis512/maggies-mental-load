@@ -3,6 +3,7 @@ import { Container } from '~/components/Container';
 import type { Route } from './+types/profile';
 import { getUserFromSession } from '~/models/session.server';
 import { authMiddleware } from '~/middleware/auth';
+import { MailIcon, ShieldCheckIcon } from 'lucide-react';
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
@@ -21,19 +22,31 @@ export default function ProfileRoute({ loaderData }: Route.ComponentProps) {
     return (
         <>
             <title>Profile</title>
-            <meta name="description" content="Welcome to your profile page!" />
-            <Container className="p-4">
-                <h1 className="mb-8 text-4xl font-bold">Profile</h1>
-                <ul className="mb-8 space-y-4">
-                    <li>
-                        <div className="badge badge-neutral">
-                            {isAdmin && '⭐️'} {loaderData.user.role}
+            <meta
+                name="description"
+                content="View your household account details and permission level."
+            />
+            <Container className="p-2 md:p-4">
+                <section className="border-kraft/12 bg-surface rounded-box max-w-2xl border p-6">
+                    <header className="pb-2">
+                        <h1 className="font-display text-2xl">Profile</h1>
+                        <p className="text-kraft/65 text-sm">
+                            Your account details and workspace permissions.
+                        </p>
+                    </header>
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-2">
+                            <ShieldCheckIcon className="text-denim h-4 w-4" />
+                            <span className="badge badge-outline">
+                                {isAdmin ? 'Admin' : 'Member'}
+                            </span>
                         </div>
-                    </li>
-                    <li>
-                        <strong>Email:</strong> {loaderData.user.email}
-                    </li>
-                </ul>
+                        <div className="text-kraft/75 flex items-center gap-2 text-sm">
+                            <MailIcon className="text-denim h-4 w-4" />
+                            <span>{loaderData.user.email}</span>
+                        </div>
+                    </div>
+                </section>
             </Container>
         </>
     );

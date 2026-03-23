@@ -1,4 +1,11 @@
 import { Container } from '~/components/Container';
+import { Link } from 'react-router';
+import {
+    ClipboardListIcon,
+    CalendarClockIcon,
+    CookingPotIcon,
+    CircleCheckBigIcon,
+} from 'lucide-react';
 
 export default function Home() {
     return (
@@ -6,127 +13,112 @@ export default function Home() {
             <title>Home | maggies-mental-load</title>
             <meta
                 name="description"
-                content="maggies-mental-load is a full-stack React starter kit with authentication, AI chat, agent tools, and production-ready patterns."
+                content="A warm, action-ready home command center that helps working moms reduce mental load and keep household life moving."
             />
-            <Container className="p-4">
-                <h1 className="mb-4 text-4xl font-bold">maggies-mental-load</h1>
-                <p className="mb-8 text-lg">
-                    A full-stack starter kit built for shipping AI-powered
-                    products. Clone the repo, configure your environment, and
-                    have a working application with authentication, AI chat, and
-                    agent tools in minutes.
-                </p>
+            <Container className="px-1 py-2 md:px-2 md:py-3">
+                <header className="border-kraft/10 mb-6 flex flex-col gap-3 border-b pb-6 sm:flex-row sm:items-start sm:justify-between">
+                    <div className="space-y-1">
+                        <span className="badge badge-info badge-outline">
+                            Welcome back
+                        </span>
+                        <h1 className="font-display text-kraft text-3xl font-semibold">
+                            Your household command center
+                        </h1>
+                        <p className="text-kraft/65 text-sm">
+                            Pick one small win first. Momentum beats perfection.
+                        </p>
+                    </div>
+                    <Link to="/chat" className="btn btn-primary btn-sm w-fit">
+                        Open Maggie
+                    </Link>
+                </header>
 
-                <h2 className="mb-3 text-2xl font-semibold">
-                    What is included
-                </h2>
-                <p className="mb-4">
-                    maggies-mental-load ships with a complete authentication
-                    system, an AI chat interface with agent tools, persistent
-                    notes, and a set of production-ready patterns for forms,
-                    error handling, and role-based access control.
-                </p>
-                <ul className="mb-8 list-inside list-disc space-y-2">
-                    <li>
-                        Sign in and sign up with email and password via Better
-                        Auth. Sessions are secure, HTTP-only, and automatically
-                        refreshed.
-                    </li>
-                    <li>
-                        Role-based access control with USER, EDITOR, and ADMIN
-                        roles baked into the database schema and session
-                        helpers.
-                    </li>
-                    <li>
-                        AI chat powered by VoltAgent and the Vercel AI SDK.
-                        Messages persist to PostgreSQL and are organized into
-                        threads so conversations are never lost.
-                    </li>
-                    <li>
-                        Agent tools that let the AI assistant take actions on
-                        behalf of the user. The included note tools demonstrate
-                        the full pattern: tool definition, database mutation,
-                        and inline tool UI rendering.
-                    </li>
-                    <li>
-                        A browsable Notes page where users can see everything
-                        the agent has saved for them, completing the tool-to-UI
-                        vertical slice.
-                    </li>
-                    <li>
-                        Working memory powered by VoltAgent and PostgreSQL. The
-                        agent remembers user preferences and context across
-                        conversations.
-                    </li>
-                    <li>
-                        Client and server-side form validation using Zod and
-                        React Hook Form, with a working example in the Form
-                        route.
-                    </li>
-                </ul>
+                <section className="mt-6 grid gap-4 md:grid-cols-12">
+                    <section className="border-kraft/12 bg-surface rounded-box border md:col-span-8">
+                        <div className="p-6 pb-3">
+                            <h2 className="font-display text-[1.45rem]">
+                                Tonight&apos;s quick plan
+                            </h2>
+                        </div>
+                        <div className="px-6 pb-6">
+                            <ul className="text-kraft/75 space-y-3 text-sm">
+                                <li className="flex items-start gap-2.5">
+                                    <CircleCheckBigIcon className="text-ribbon mt-0.5 h-4 w-4" />
+                                    Capture what&apos;s still swirling in your
+                                    head.
+                                </li>
+                                <li className="flex items-start gap-2.5">
+                                    <CircleCheckBigIcon className="text-ribbon mt-0.5 h-4 w-4" />
+                                    Pick one dinner + one tomorrow must-do.
+                                </li>
+                                <li className="flex items-start gap-2.5">
+                                    <CircleCheckBigIcon className="text-ribbon mt-0.5 h-4 w-4" />
+                                    Let Maggie turn it into clear next actions.
+                                </li>
+                            </ul>
+                            <div className="mt-5 flex flex-wrap gap-2">
+                                <Link
+                                    to="/chat"
+                                    className="btn btn-primary btn-sm"
+                                >
+                                    Start a brain dump
+                                </Link>
+                                <Link to="/notes" className="btn btn-sm">
+                                    Review saved notes
+                                </Link>
+                            </div>
+                        </div>
+                    </section>
 
-                <h2 className="mb-3 text-2xl font-semibold">The stack</h2>
-                <p className="mb-4">
-                    Every technology was chosen to keep the codebase type-safe
-                    from database to UI. Prisma generates types from the schema,
-                    Zod validates runtime data, React Router 7 types routes and
-                    loaders, and CVA ensures type-safe component variants.
-                </p>
-                <ul className="mb-8 list-inside list-disc space-y-2">
-                    <li>React Router v7 with SSR and config-based routing</li>
-                    <li>
-                        PostgreSQL via Prisma, schema at prisma/schema.prisma
-                    </li>
-                    <li>
-                        VoltAgent for agent orchestration, memory, and tool
-                        execution
-                    </li>
-                    <li>Vercel AI SDK for streaming chat UI</li>
-                    <li>Tailwind CSS v4 and DaisyUI v5 for styling</li>
-                    <li>
-                        Bun for local development, Node 20 Alpine for production
-                    </li>
-                </ul>
+                    <section className="border-kraft/12 bg-surface rounded-box border p-6 md:col-span-4">
+                        <h3 className="mb-2 text-base font-semibold">
+                            This week focus
+                        </h3>
+                        <div className="text-kraft/70 space-y-2 text-sm">
+                            <p>Small consistent wins create real relief.</p>
+                            <span className="badge badge-outline">
+                                Progress over pressure
+                            </span>
+                        </div>
+                    </section>
+                </section>
 
-                <h2 className="mb-3 text-2xl font-semibold">
-                    Adding your own tools
-                </h2>
-                <p className="mb-4">
-                    The included note tools show the complete pattern for
-                    extending the agent. To add a new tool:
-                </p>
-                <ol className="mb-8 list-inside list-decimal space-y-2">
-                    <li>
-                        Define a Prisma model in{' '}
-                        <code>prisma/schema.prisma</code> and run a migration.
-                    </li>
-                    <li>
-                        Create a server data access module in{' '}
-                        <code>app/models/</code>.
-                    </li>
-                    <li>
-                        Add a <code>createTool()</code> definition in{' '}
-                        <code>app/voltagent/agents.ts</code> and wire it into
-                        the agent&apos;s tools array.
-                    </li>
-                    <li>
-                        Build a tool UI component in{' '}
-                        <code>app/components/</code> and route it in the chat
-                        thread view.
-                    </li>
-                    <li>
-                        Optionally add a route page to browse the records
-                        outside of chat.
-                    </li>
-                </ol>
+                <section className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                    <section className="border-kraft/12 bg-surface rounded-box border p-6">
+                        <h3 className="mb-2 flex items-center gap-2 text-base font-semibold">
+                            <ClipboardListIcon className="text-spool h-4 w-4" />
+                            Mental load capture
+                        </h3>
+                        <p className="text-kraft/70 text-sm">
+                            Put messy thoughts in one place, then convert them
+                            into calm next steps.
+                        </p>
+                    </section>
+                    <section className="border-kraft/12 bg-surface rounded-box border p-6">
+                        <h3 className="mb-2 flex items-center gap-2 text-base font-semibold">
+                            <CookingPotIcon className="text-spool h-4 w-4" />
+                            Meals and grocery
+                        </h3>
+                        <p className="text-kraft/70 text-sm">
+                            Keep dinner decisions simple and your shopping list
+                            synced to real life.
+                        </p>
+                    </section>
+                    <section className="border-kraft/12 bg-surface rounded-box border p-6 sm:col-span-2 xl:col-span-1">
+                        <h3 className="mb-2 flex items-center gap-2 text-base font-semibold">
+                            <CalendarClockIcon className="text-spool h-4 w-4" />
+                            Scheduling and logistics
+                        </h3>
+                        <p className="text-kraft/70 text-sm">
+                            Track deadlines, school details, and handoffs
+                            without carrying it all in your head.
+                        </p>
+                    </section>
+                </section>
 
-                <h2 className="mb-3 text-2xl font-semibold">Getting started</h2>
-                <p>
-                    Install dependencies with <code>bun install</code>, run
-                    migrations with <code>bunx prisma migrate dev</code>, seed
-                    the database with <code>bunx prisma db seed</code>, and
-                    start the dev server with <code>bun run dev</code>. The app
-                    will be available at <code>http://localhost:5173</code>.
+                <p className="text-kraft/65 mt-6 text-sm">
+                    You don&apos;t need to solve everything in one sitting. Pick
+                    one next action, and keep going from there.
                 </p>
             </Container>
         </>

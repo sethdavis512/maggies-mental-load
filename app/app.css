@@ -1,15 +1,17 @@
 @import 'tailwindcss';
+@import 'rivet-ui/styles';
 
 @theme {
     --font-sans:
-        'Space Grotesk', ui-sans-serif, system-ui, sans-serif,
+        'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
+    --font-display: 'Fraunces', Georgia, serif;
 }
 
 @plugin '@tailwindcss/typography';
 
 @plugin 'daisyui' {
-    themes: light --default;
+    themes: workshop --default;
     /* dark --prefersdark */
 }

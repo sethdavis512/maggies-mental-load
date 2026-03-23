@@ -6,6 +6,7 @@ import { getUserFromSession } from '~/models/session.server';
 import { getNotesByUserId } from '~/models/note.server';
 import { authMiddleware } from '~/middleware/auth';
 import { FileTextIcon } from 'lucide-react';
+import { Link } from 'react-router';
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
@@ -29,63 +30,85 @@ export default function NotesRoute({ loaderData }: Route.ComponentProps) {
                 content="View and manage your saved notes."
             />
             <div className="h-full overflow-y-auto">
-                <Container className="p-4">
-                    <h1 className="mb-8 text-4xl font-bold">Notes</h1>
+                <Container className="p-2 md:p-4">
+                    <header className="border-kraft/10 mb-5 border-b pb-6">
+                        <span className="badge badge-warning badge-outline mb-2">
+                            Memory
+                        </span>
+                        <h1 className="font-display text-kraft text-3xl font-semibold">
+                            Saved notes
+                        </h1>
+                        <p className="text-kraft/65 text-sm">
+                            Your important takeaways, all in one place.
+                        </p>
+                    </header>
                     {notes.length > 0 ? (
-                        <ul className="space-y-4">
+                        <ul className="mt-5 space-y-4">
                             {notes.map((note) => (
                                 <li
                                     key={note.id}
-                                    className="rounded-box border-base-300 bg-base-200 border p-4"
+                                    className="border-kraft/12 bg-surface rounded-box border"
                                 >
-                                    <div className="flex items-start gap-3">
-                                        <FileTextIcon
-                                            aria-hidden="true"
-                                            className="text-primary mt-1 h-5 w-5 shrink-0"
-                                        />
-                                        <div className="min-w-0">
-                                            <h2 className="text-lg font-semibold">
-                                                {note.title}
-                                            </h2>
-                                            <div className="text-base-content/70 mt-1">
-                                                <details>
-                                                    <summary>View Note</summary>
-                                                    <Markdown>
-                                                        {note.content}
-                                                    </Markdown>
-                                                </details>
+                                    <div className="px-6 pt-6 pb-2">
+                                        <div className="flex items-start gap-3">
+                                            <FileTextIcon
+                                                aria-hidden="true"
+                                                className="text-spool mt-1 h-5 w-5 shrink-0"
+                                            />
+                                            <div className="min-w-0">
+                                                <h2 className="text-lg font-semibold">
+                                                    {note.title}
+                                                </h2>
+                                                <time
+                                                    className="text-kraft/55 mt-1 block text-xs"
+                                                    dateTime={new Date(
+                                                        note.createdAt,
+                                                    ).toISOString()}
+                                                >
+                                                    {new Date(
+                                                        note.createdAt,
+                                                    ).toLocaleDateString(
+                                                        undefined,
+                                                        {
+                                                            year: 'numeric',
+                                                            month: 'long',
+                                                            day: 'numeric',
+                                                        },
+                                                    )}
+                                                </time>
                                             </div>
-                                            <time
-                                                className="text-base-content/50 mt-2 block text-xs"
-                                                dateTime={new Date(
-                                                    note.createdAt,
-                                                ).toISOString()}
-                                            >
-                                                {new Date(
-                                                    note.createdAt,
-                                                ).toLocaleDateString(
-                                                    undefined,
-                                                    {
-                                                        year: 'numeric',
-                                                        month: 'long',
-                                                        day: 'numeric',
-                                                    },
-                                                )}
-                                            </time>
                                         </div>
+                                    </div>
+                                    <div className="px-6 pt-0 pb-6">
+                                        <details>
+                                            <summary className="text-denim cursor-pointer text-sm font-medium">
+                                                Read note
+                                            </summary>
+                                            <div className="text-kraft/75 mt-2 text-sm">
+                                                <Markdown>
+                                                    {note.content}
+                                                </Markdown>
+                                            </div>
+                                        </details>
                                     </div>
                                 </li>
                             ))}
                         </ul>
                     ) : (
-                        <p className="text-base-content/50">
-                            No notes yet. Try asking the assistant to save a
-                            note for you in{' '}
-                            <a href="/chat" className="link link-primary">
-                                Chat
-                            </a>
-                            .
-                        </p>
+                        <div className="border-kraft/12 bg-canvas rounded-box mt-5 max-w-xl border p-5">
+                            <div className="space-y-3">
+                                <p className="text-kraft/70 text-sm">
+                                    No notes yet. Ask Maggie to save key ideas
+                                    while you chat.
+                                </p>
+                                <Link
+                                    to="/chat"
+                                    className="text-denim text-sm font-semibold underline-offset-2 hover:underline"
+                                >
+                                    Open chat
+                                </Link>
+                            </div>
+                        </div>
                     )}
                 </Container>
             </div>

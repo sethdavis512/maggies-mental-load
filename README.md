@@ -1,4 +1,4 @@
-# Iridium
+# maggies-mental-load
 
 A full-stack starter kit for shipping AI-powered products. Clone the repo, configure your environment, and have a working application with authentication, AI chat, and agent tools in minutes.
 
@@ -120,14 +120,14 @@ Deployable to Railway, Fly.io, AWS ECS, Google Cloud Run, or any Docker-compatib
 
 ## Routes
 
-| Route          | Description                              |
-| -------------- | ---------------------------------------- |
-| `/`            | Home — overview of what Iridium includes |
-| `/login`       | Sign in or create an account             |
-| `/chat`        | AI chat with thread sidebar              |
-| `/notes`       | Browse saved notes                       |
-| `/profile`     | User profile and role                    |
-| `/form`        | Form validation example                  |
-| `/api/chat`    | Chat API endpoint                        |
-| `/api/auth/*`  | Auth API endpoints                       |
-| `/healthcheck` | Health status                            |
+| Route          | Description                                          |
+| -------------- | ---------------------------------------------------- |
+| `/`            | Home — overview of what maggies-mental-load includes |
+| `/login`       | Sign in or create an account                         |
+| `/chat`        | AI chat with thread sidebar                          |
+| `/notes`       | Browse saved notes                                   |
+| `/profile`     | User profile and role                                |
+| `/form`        | Form validation example                              |
+| `/api/chat`    | Chat API endpoint                                    |
+| `/api/auth/*`  | Auth API endpoints                                   |
+| `/healthcheck` | Health status                                        |

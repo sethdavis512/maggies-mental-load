@@ -2,5 +2,5 @@ import { test, expect } from './fixtures';
 
 test('homepage loads', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/Iridium/i);
+    await expect(page).toHaveTitle(/maggies-mental-load/i);
 });

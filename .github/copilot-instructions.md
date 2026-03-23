@@ -1,92 +1,82 @@
-# Iridium — Project Guidelines
+# Maggie's Mental Load — Copilot Project Instructions
 
-Full-stack AI chat app built with React Router v7, Better Auth, Prisma, and Vercel AI SDK.
+## Primary Objective
 
-## Tech Stack
+Build Maggie's Mental Load as a trusted home-management system for working moms.
+Every implementation should reduce mental overhead, preserve context across
+sessions, and produce clear next actions.
 
-- **Framework**: React Router v7 (SSR, `v8_middleware` future flag)
-- **Auth**: Better Auth with Prisma adapter, admin plugin (roles: USER, EDITOR, ADMIN)
-- **Database**: PostgreSQL via Prisma (schema at `prisma/schema.prisma`, client generated to `app/generated/prisma/`)
-- **AI**: Vercel AI SDK (`ai`, `@ai-sdk/react`), VoltAgent — model: `anthropic/claude-3-haiku-20240307`
-- **Styling**: Tailwind CSS v4 + DaisyUI v5, CVA with tailwind-merge
-- **Runtime**: Bun (local dev), Node 20 Alpine (Docker/prod)
-- **Validation**: Zod
-- **Icons**: lucide-react
+Brand promise: **Mental Load, Managed.**
 
-## Build & Dev Commands
+## Product Intent
 
-| Command             | Purpose                        |
-| ------------------- | ------------------------------ |
-| `bun install`       | Install dependencies           |
-| `bun run dev`       | Start dev server (port 5173)   |
-| `bun run build`     | Production build               |
-| `bun run typecheck` | Generate route types + run tsc |
-| `bun run seed`      | Seed database                  |
-| `bun run studio`    | Open Prisma Studio             |
+- Maggie is a persona, not a generic assistant.
+- The experience should feel warm, organized, and practical.
+- Favor fast progress for exhausted users: quick path first, depth optional.
 
-Prisma CLI: always use `bunx --bun prisma <command>`.
+## Persona Guardrails (Non-Negotiable)
 
-## Architecture
+- Never mention AI/LLM/Claude/system internals in user-facing copy.
+- Never shame or guilt users.
+- Keep tone encouraging and efficient.
+- Avoid making a list feel bigger than necessary.
+- End workflow/session completions with: `Check that off your list. ✓`
 
-### Routing (config-based)
+## Scope Model (Build Direction)
 
-Routes are defined in `app/routes.ts` using `@react-router/dev/routes` helpers (`index`, `route`, `prefix`) — **not** file-system routing.
+Architect for all tiers now, even when implementing Tier 1 behaviors:
 
-Route files export: `middleware` array → `loader` → `action` → `default` component.
+- Tier 1: planning/guidance workflows (no external execution)
+- Tier 2: connected actions (calendar, email/messages, reminders, contacts)
+- Tier 3: proactive/autonomous operations and broader integrations
 
-Auto-generated types: `import type { Route } from './+types/<routeName>'`.
+Do not hardcode assumptions that block later integrations.
 
-API routes live under `/api` prefix and export only `loader`/`action` (no UI component).
+## Core Workflows to Protect
 
-### Data Access Layer
+- Mental Load Capture (front door)
+- Meals & Grocery
+- Home Operations
+- Kids & Family
+- Scheduling & Logistics
+- Finance & Budget
+- Household Manual
+- Seasonal check-in workflows
 
-Plain exported async functions in `app/models/*.server.ts` — no classes, no ORM wrapper.
+## System Memory Requirements
 
-- `thread.server.ts`: CRUD for threads + `saveChat` (upserts last 2 messages)
-- `message.server.ts`: `addMessageToThread`
-- `session.server.ts`: `getUserFromSession`, `requireUser`, `requireAnonymous`, `hasRole`, `requireRole`
+All workflow work should maintain shared continuity:
 
-### Auth Flow
+- Update the Master Running List (tasks, urgency, due dates, category)
+- Update the Household Manual (preferences, children, providers, routines)
+- Preserve and pass forward useful session context
 
-- Server config: `app/lib/auth.server.ts` (Better Auth + Prisma adapter)
-- Client config: `app/lib/auth.client.ts` (`createAuthClient` + `adminClient` plugin)
-- API passthrough: all `/api/auth/*` → `auth.handler` in `app/routes/api-auth.ts`
-- Middleware: `app/middleware/auth.ts` checks session, redirects to `/login`, stores user in `userContext`
-- Protect routes by exporting: `export const middleware: Route.MiddlewareFunction[] = [authMiddleware]`
+## Privacy & Community Rules
 
-### AI Chat
+- Show privacy reminder before sensitive intake (children, medical, financial,
+  address, loyalty/rewards details).
+- Require explicit opt-in before storing/sharing community wisdom.
+- Never expose or repurpose private household data beyond intended features.
 
-- Streaming via `streamText` in `app/routes/api-chat.ts`, persisted in `saveChat`
-- Client uses `useChat` from `@ai-sdk/react` with `DefaultChatTransport` pointing to `/api/chat`
-- `UIMessage.parts` serialized as JSON string in the `content` DB column
+## UI/UX Direction
 
-## Conventions
+- Mobile-first and low-friction.
+- Clean modern layout with warm feel and a bold accent as punctuation.
+- Keep interactions short, skimmable, and action-oriented.
 
-### Imports
+## Engineering Standards
 
-- Use `~/` path alias for all app imports (maps to `./app/*`)
-- Server-only files use `.server.ts` suffix
+- Framework: React Router v7 (config-based routing)
+- Data layer: Prisma + PostgreSQL via `app/models/*.server.ts`
+- Auth: Better Auth
+- AI stack: Vercel AI SDK + VoltAgent
+- Styling: Tailwind v4 + DaisyUI v5 + CVA
+- Validation: Zod
 
-### Components
+## Delivery Expectations
 
-- Use CVA from `cva.config` (not the raw `cva` package) — it integrates `tailwind-merge`
-- Export variant definitions AND a named function component
-- Type props with `PropsWithChildren<Props>`
-- Use DaisyUI v5 class names (`card`, `btn`, `chat-bubble`, `drawer`, `badge`, etc.)
-
-### Routes
-
-- Pages set `<title>` and `<meta>` inline in JSX — no `meta` export
-- Use `<Form>` with `intent` hidden fields for action disambiguation
-- Export `ErrorBoundary` using `isRouteErrorResponse` for error handling
-- Use `tiny-invariant` for runtime assertions
-
-### Context
-
-- `app/context.ts`: `userContext` via React Router's `createContext<User | null>`
-- `app/shared.ts`: shared className helpers (`listItemClassName`, `navLinkClassName`)
-
-### Layout
-
-- Root layout in `app/root.tsx`: header nav → 3/9 grid (sidebar + content) → footer
-- Auth-conditional nav items, right-side DaisyUI `Drawer`
+- Implement complete flows, not disconnected fragments.
+- Keep architecture integration-ready (Tier 2/3 safe by default).
+- Preserve persona and trust model in prompts, handlers, and UI copy.
+- Add tests or update existing tests when behavior changes.
+- Run `bun run validate` after substantial changes.

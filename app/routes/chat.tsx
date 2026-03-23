@@ -108,7 +108,7 @@ export default function ChatRoute({ loaderData }: Route.ComponentProps) {
 
     return (
         <>
-            <title>Chat | Iridium</title>
+            <title>Chat | maggies-mental-load</title>
             <meta name="description" content="This is the chat page" />
             <Container className="flex h-full flex-col gap-4 p-4">
                 <div className="flex items-center justify-between">

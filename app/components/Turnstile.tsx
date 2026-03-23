@@ -70,13 +70,13 @@ export function Turnstile() {
 
     return (
         <>
-            <title>{`${isSignIn ? 'Sign In' : 'Sign Up'} | Iridium`}</title>
+            <title>{`${isSignIn ? 'Sign In' : 'Sign Up'} | maggies-mental-load`}</title>
             <meta
                 name="description"
                 content={
                     isSignIn
-                        ? 'Access your Iridium account with your email and password.'
-                        : 'Create your Iridium account to explore the SaaS starter kit.'
+                        ? 'Access your maggies-mental-load account with your email and password.'
+                        : 'Create your maggies-mental-load account to explore the SaaS starter kit.'
                 }
             />
             <div className="p-4">

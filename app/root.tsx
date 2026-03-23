@@ -254,7 +254,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
                                         className="h-6 w-6"
                                     />
                                     <strong className="font-bold">
-                                        Iridium
+                                        maggies-mental-load
                                     </strong>
                                 </Link>
                             </li>
@@ -408,7 +408,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
             <footer className="bg-base-300 mt-4 shrink-0 py-4">
                 <Container className="px-4">
                     <p className="text-base-content">
-                        Iridium. Go build. Be bold.
+                        maggies-mental-load. Go build. Be bold.
                     </p>
                 </Container>
             </footer>

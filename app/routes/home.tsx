@@ -3,13 +3,13 @@ import { Container } from '~/components/Container';
 export default function Home() {
     return (
         <>
-            <title>Home | Iridium</title>
+            <title>Home | maggies-mental-load</title>
             <meta
                 name="description"
-                content="Iridium is a full-stack React starter kit with authentication, AI chat, agent tools, and production-ready patterns."
+                content="maggies-mental-load is a full-stack React starter kit with authentication, AI chat, agent tools, and production-ready patterns."
             />
             <Container className="p-4">
-                <h1 className="mb-4 text-4xl font-bold">Iridium</h1>
+                <h1 className="mb-4 text-4xl font-bold">maggies-mental-load</h1>
                 <p className="mb-8 text-lg">
                     A full-stack starter kit built for shipping AI-powered
                     products. Clone the repo, configure your environment, and
@@ -21,10 +21,10 @@ export default function Home() {
                     What is included
                 </h2>
                 <p className="mb-4">
-                    Iridium ships with a complete authentication system, an AI
-                    chat interface with agent tools, persistent notes, and a set
-                    of production-ready patterns for forms, error handling, and
-                    role-based access control.
+                    maggies-mental-load ships with a complete authentication
+                    system, an AI chat interface with agent tools, persistent
+                    notes, and a set of production-ready patterns for forms,
+                    error handling, and role-based access control.
                 </p>
                 <ul className="mb-8 list-inside list-disc space-y-2">
                     <li>

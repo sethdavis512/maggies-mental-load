@@ -1,10 +1,106 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working
+with code in this repository.
 
-## Project Overview
+## Product Objective
 
-Iridium is a full-stack AI chat application built with React Router v7 (SSR), Better Auth, Prisma/PostgreSQL, and Vercel AI SDK with VoltAgent.
+Maggie's Mental Load is a home management platform for working moms with young
+kids. The product objective is to reduce invisible household cognitive load by
+turning scattered responsibilities into one trusted, actionable system.
+
+Primary promise: **Mental Load, Managed.**
+
+Maggie is the product experience. She should feel like a warm, highly
+organized friend and chief of staff — never a generic chatbot.
+
+## Audience & Brand
+
+- Target customer: Working moms with children under 5
+- Voice: Warm, efficient, slightly quirky, never clinical
+- Outcome: Clarity, momentum, and relief in everyday household operations
+- Launch strategy: Tier 1 first, architected for Tier 2 and Tier 3 from day one
+
+## Non-Negotiable Persona Rules
+
+- Maggie never references AI, Claude, or underlying technology.
+- Maggie never shames, guilts, or overwhelms users.
+- Maggie always offers a quick path for time-constrained users.
+- Maggie keeps momentum: small, concrete next steps.
+- Maggie closes sessions with: `Check that off your list. ✓`
+
+## Core Product System
+
+Every workflow must read from and write to shared persistent memory:
+
+- **Master Running List**: per-user, categorized, urgency/deadline-aware tasks
+- **Household Manual**: durable family profile (children, providers, preferences)
+- **Session Continuity**: carry relevant history/context into each interaction
+- **Community Wisdom**: explicit opt-in only; never share without approval
+
+## Tiered Product Direction (Architecture Requirement)
+
+Build Tier 1 for launch, but design internals for Tier 3 extensibility.
+
+- **Tier 1 (Launch / Essential)**: Guidance and planning only, no external actions
+- **Tier 2 (Connected)**: Calendar/email/contacts/reminders integrations + approvals
+- **Tier 3 (Pro)**: Proactive/autonomous household execution via deeper integrations
+
+Do not make architectural decisions that block Tier 2+ integrations.
+
+## Must-Support Workflows
+
+- Onboarding
+- Mental Load Capture (brain dump front door)
+- Meals & Grocery
+- Home Operations
+- Kids & Family
+- Scheduling & Logistics
+- Finance & Budget
+- Household Manual
+- Seasonal workflows (spring, summer, fall, new year)
+
+## Privacy & Trust Requirements
+
+- Sensitive data requires explicit privacy reminder before collection.
+- Sensitive data includes child details, medical data, financial data, addresses,
+  and loyalty/rewards account data.
+- Community contributions require explicit opt-in approval every time.
+- No training/use of personal household data outside product functionality.
+- Persist only what is needed, and keep user-visible controls for edits/corrections.
+
+## Technical Stack
+
+- **Framework**: React Router v7 with SSR and `v8_middleware` future flag
+- **Auth**: Better Auth with Prisma adapter, admin plugin
+- **Database**: PostgreSQL via Prisma ORM
+- **AI**: Vercel AI SDK + VoltAgent
+- **Styling**: Tailwind CSS v4 + DaisyUI v5 + CVA
+- **Runtime**: Bun (dev), Node 20 Alpine (Docker/prod)
+- **Validation**: Zod + React Hook Form
+
+## Architecture Guidelines
+
+### Routing
+
+Config-based routes in `app/routes.ts` using `@react-router/dev/routes`.
+Route module order: `middleware` (optional) -> `loader` -> `action` -> component.
+
+### Data Access
+
+Use plain async functions in `app/models/*.server.ts`.
+No classes and no ORM wrapper abstractions.
+
+### AI Behavior Surface
+
+- Preserve persona integrity in system prompts and route handlers.
+- Ensure quick-path variants are available in workflow prompts.
+- Persist useful context updates after each workflow/session.
+
+### Integrations Strategy
+
+Keep external providers behind composable boundaries so capabilities can be
+enabled per tier without rewriting core workflow logic.
 
 ## Commands
 
@@ -25,111 +121,22 @@ Iridium is a full-stack AI chat application built with React Router v7 (SSR), Be
 | `bun run db:push`      | Push schema without migration        |
 | `bun run db:generate`  | Regenerate Prisma client             |
 
-Run a single Playwright test: `bunx playwright test tests/auth.spec.ts --project=chromium`
+Prisma CLI: always use `bunx --bun prisma <command>`.
 
-Prisma CLI: always use `bunx --bun prisma <command>` (not `npx`).
+## Implementation Conventions
 
-## Local Setup
+- Use `~/` path alias for app imports.
+- Server-only modules use `.server.ts`.
+- Use CVA from `cva.config` (not raw `cva`).
+- Use DaisyUI v5 class names and project component patterns.
+- Route pages set `<title>` and `<meta>` inline in JSX.
+- Use `<Form>` with `intent` hidden fields for multi-action routes.
+- Export route `ErrorBoundary` with `isRouteErrorResponse`.
+- Prefer `tiny-invariant` for runtime assertions.
 
-```sh
-cp .env.example .env        # fill in BETTER_AUTH_SECRET and ANTHROPIC_API_KEY
-docker compose -f docker-compose.dev.yml up -d   # starts Postgres
-bun install
-bun run db:migrate
-bun run dev
-```
+## Quality Bar
 
-Environment variables are validated at startup by `app/lib/env.server.ts` — missing or invalid vars produce clear error messages.
-
-## Tech Stack
-
-- **Framework**: React Router v7 with SSR and `v8_middleware` future flag
-- **Auth**: Better Auth with Prisma adapter, admin plugin (roles: USER < EDITOR < ADMIN)
-- **Database**: PostgreSQL via Prisma ORM (schema at `prisma/schema.prisma`, generated client at `app/generated/prisma/`)
-- **AI**: Vercel AI SDK (`ai`, `@ai-sdk/react`) + VoltAgent with `anthropic/claude-3-haiku-20240307`
-- **Styling**: Tailwind CSS v4 + DaisyUI v5, CVA with tailwind-merge
-- **Runtime**: Bun (dev), Node 20 Alpine (Docker/prod)
-- **Validation**: Zod + React Hook Form
-- **Icons**: lucide-react
-
-## Architecture
-
-### Routing (config-based, NOT file-system)
-
-Routes are defined in `app/routes.ts` using `@react-router/dev/routes` helpers (`index`, `route`, `prefix`). Route files export: `middleware` array (optional) → `loader` → `action` → `default` component.
-
-Auto-generated types: `import type { Route } from './+types/<routeName>'`.
-
-API routes live under `/api` prefix and export only `loader`/`action` (no component).
-
-### Data Access Layer
-
-Plain async functions in `app/models/*.server.ts` — no classes, no ORM wrappers. Functions use the Prisma client directly.
-
-- `thread.server.ts` — thread CRUD + `saveChat` (upserts last 2 messages)
-- `message.server.ts` — `addMessageToThread`
-- `session.server.ts` — `getUserFromSession`, `requireUser`, `requireAnonymous`, `hasRole`, `requireRole`
-
-### Auth Flow
-
-- Server config: `app/lib/auth.server.ts` (Better Auth + Prisma adapter)
-- Client config: `app/lib/auth.client.ts` (`createAuthClient` + `adminClient` plugin)
-- API passthrough: `/api/auth/*` → `auth.handler` in `app/routes/api-auth.ts`
-- Middleware: `app/middleware/auth.ts` checks session, redirects to `/login`, stores user in `userContext`
-- Protect a route: `export const middleware: Route.MiddlewareFunction[] = [authMiddleware]`
-
-### AI Chat Flow
-
-1. Client sends messages via `useChat` (`@ai-sdk/react`) with `DefaultChatTransport` → `/api/chat`
-2. Server validates session, applies rate limiting (20 req/min), streams via `agent.streamText()`
-3. VoltAgent manages conversation memory (PostgreSQL-backed) and calls tools as needed
-4. `UIMessage.parts` are serialized as JSON string in the `content` DB column
-5. On completion, `saveChat()` upserts messages to the database
-
-Agent tools are defined in `app/voltagent/tools/` (e.g., `create_note`, `list_notes`, `search_notes`).
-
-### Rate Limiting
-
-In-memory sliding window in `app/lib/rate-limit.server.ts`. Used for chat (20/min) and note creation (10/hour). Single-instance only — needs Redis for distributed setups.
-
-### Environment Validation
-
-`app/lib/env.server.ts` validates all required env vars (`DATABASE_URL`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_BASE_URL`, `ANTHROPIC_API_KEY`) with Zod at startup. Import `env` from this module instead of reading `process.env` directly in server code.
-
-### Testing
-
-Playwright E2E tests in `tests/`. Auth setup project runs first and saves `storageState` to `test-results/.auth/user.json` — all browser projects reuse this so tests don't re-login. Test fixtures in `tests/fixtures.ts` export `test` (with `authedPage` fixture), `expect`, and `TEST_USER`. Chat tests mock `/api/chat` with canned SSE responses (no AI service needed).
-
-## Conventions
-
-### Imports
-
-- Use `~/` path alias for all app imports (maps to `./app/*`)
-- Server-only files use `.server.ts` suffix
-
-### Components
-
-- Use CVA from `cva.config` (not the raw `cva` package) — it integrates `tailwind-merge`
-- Export both variant definitions and a named function component
-- Type props with `PropsWithChildren<Props>`
-- Use DaisyUI v5 class names (`card`, `btn`, `chat-bubble`, `drawer`, `badge`, etc.)
-
-### Routes
-
-- Pages set `<title>` and `<meta>` inline in JSX — no `meta` export
-- Use `<Form>` with `intent` hidden fields for action disambiguation
-- Export `ErrorBoundary` using `isRouteErrorResponse` for error handling
-- Use `tiny-invariant` for runtime assertions
-
-### Context & Shared Styles
-
-- `app/context.ts` — `userContext` via React Router's `createContext<SessionUser | null>`
-- `app/shared.ts` — shared className helpers (`listItemClassName`, `navLinkClassName`)
-
-### Layout
-
-Root layout in `app/root.tsx`: header nav → 3/9 grid (sidebar + content) → footer. Auth-conditional nav items with right-side DaisyUI `Drawer` for mobile.
-
-### Formatting
-
-Prettier with: 80 char width, 4-space indentation, single quotes, semicolons, tailwindcss plugin for class sorting. ESLint with typescript-eslint and react-hooks plugin.
+- Keep behavior aligned with product trust model and persona rules.
+- Prefer complete, end-to-end features over partial scaffolding.
+- Add/update tests when behavior changes.
+- Run `bun run validate` after meaningful edits.

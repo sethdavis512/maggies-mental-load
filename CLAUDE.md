@@ -140,3 +140,11 @@ Prisma CLI: always use `bunx --bun prisma <command>`.
 - Prefer complete, end-to-end features over partial scaffolding.
 - Add/update tests when behavior changes.
 - Run `bun run validate` after meaningful edits.
+
+## Cross-Repo Hardening Feedback Loop
+
+- This repo is also used to harden `~/repositories/iridium`.
+- When a security, reliability, or architecture hardening improvement here is
+  likely reusable upstream, document it in the relevant Linear project.
+- Include enough detail for backporting: problem/risk, fix summary, files
+  touched, and recommended upstream application notes.

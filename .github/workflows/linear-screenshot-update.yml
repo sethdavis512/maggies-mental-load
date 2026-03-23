@@ -1,0 +1,89 @@
+name: Linear Screenshot Update
+
+on:
+    workflow_dispatch:
+        inputs:
+            linearIssueId:
+                description: 'Linear issue ID (UUID, not key)'
+                required: true
+                type: string
+            branch:
+                description: 'Branch to publish screenshot links from'
+                required: false
+                default: 'main'
+                type: string
+
+permissions:
+    contents: write
+
+env:
+    DATABASE_URL: postgresql://postgres:postgres@localhost:5432/iridium_test
+    BETTER_AUTH_SECRET: test-secret-do-not-use-in-production!!
+    BETTER_AUTH_BASE_URL: http://localhost:5173
+    ANTHROPIC_API_KEY: test-key-not-used-in-e2e
+
+jobs:
+    screenshot-and-post:
+        name: Capture and post screenshots
+        runs-on: ubuntu-latest
+        timeout-minutes: 20
+
+        services:
+            postgres:
+                image: postgres:16-alpine
+                env:
+                    POSTGRES_USER: postgres
+                    POSTGRES_PASSWORD: postgres
+                    POSTGRES_DB: iridium_test
+                ports:
+                    - 5432:5432
+                options: >-
+                    --health-cmd "pg_isready -U postgres"
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v2
+
+            - name: Install dependencies
+              run: bun install --frozen-lockfile
+
+            - name: Generate Prisma client
+              run: bunx --bun prisma generate
+
+            - name: Run migrations
+              run: bunx --bun prisma migrate deploy
+
+            - name: Install Playwright Chromium
+              run: bunx playwright install --with-deps chromium
+
+            - name: Capture screenshots
+              run: bun run screenshots:capture
+
+            - name: Commit screenshot updates
+              run: |
+                  git config user.name "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                  git add screenshots/runs
+                  if git diff --cached --quiet; then
+                    echo "No screenshot changes to commit."
+                    exit 0
+                  fi
+                  git commit -m "chore: screenshot update for Linear"
+                  git push origin HEAD:${{ github.event.inputs.branch }}
+
+            - name: Post to Linear
+              env:
+                  LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+                  LINEAR_ISSUE_ID: ${{ github.event.inputs.linearIssueId }}
+                  SCREENSHOT_GITHUB_BRANCH: ${{ github.event.inputs.branch }}
+                  GITHUB_REPOSITORY: ${{ github.repository }}
+                  GITHUB_ACTOR: ${{ github.actor }}
+              run: bun run screenshots:post:linear

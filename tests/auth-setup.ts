@@ -8,8 +8,10 @@ import { STORAGE_STATE, TEST_USER } from './fixtures';
  */
 setup('authenticate', async ({ page }) => {
     await page.goto('/login');
-    await page.getByPlaceholder('name@example.com').fill(TEST_USER.email);
-    await page.getByPlaceholder('Your password').fill(TEST_USER.password);
+    await page.getByPlaceholder('you@example.com').fill(TEST_USER.email);
+    await page
+        .getByPlaceholder('At least 8 characters')
+        .fill(TEST_USER.password);
     await page.getByRole('button', { name: 'Login' }).click();
 
     await page.waitForURL(/\/profile/);

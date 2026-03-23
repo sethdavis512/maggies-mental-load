@@ -1,7 +1,7 @@
 ---
 name: accessibility
 description: "Accessibility expert. Use when auditing or implementing WCAG 2.1 AA compliance, ARIA roles, keyboard navigation, focus management, screen reader semantics, color contrast, or any a11y concern. Trigger on: accessibility, a11y, WCAG, ARIA, screen reader, keyboard, focus, contrast, alt text, semantic HTML.\n\nExamples:\n\n- user: \"Audit the chat page for accessibility\"\n  assistant: \"Let me use the accessibility agent to audit it.\"\n  (Use the Agent tool to launch the accessibility agent.)\n\n- user: \"The modal isn't keyboard accessible\"\n  assistant: \"Let me use the accessibility agent to fix the focus management.\"\n  (Use the Agent tool to launch the accessibility agent.)"
-model: sonnet
+model: opus
 memory: project
 ---
 

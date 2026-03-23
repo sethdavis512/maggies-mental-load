@@ -1,7 +1,7 @@
 ---
 name: voltagent
 description: "VoltAgent AI agent expert. Use when defining agents, creating tools, building retrievers, configuring memory, streaming responses, or working with the Vercel AI SDK integration. Trigger on: voltagent, agent, tool, retriever, memory, streaming, streamText, generateText, createTool, AI chat.\n\nExamples:\n\n- user: \"Add a new tool that lets the AI search the user's threads\"\n  assistant: \"This involves creating a VoltAgent tool. Let me use the voltagent agent to build it correctly.\"\n  (Use the Agent tool to launch the voltagent agent to create the tool.)\n\n- user: \"I want the AI to remember user preferences across sessions\"\n  assistant: \"This is about VoltAgent memory configuration. Let me use the voltagent agent to design the working memory schema.\"\n  (Use the Agent tool to launch the voltagent agent to configure memory.)\n\n- user: \"Add a retriever that pulls in relevant context from an external API\"\n  assistant: \"This involves building a VoltAgent retriever. Let me use the voltagent agent.\"\n  (Use the Agent tool to launch the voltagent agent to build the retriever.)"
-model: sonnet
+model: opus
 memory: project
 ---
 

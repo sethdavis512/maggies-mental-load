@@ -1,7 +1,7 @@
 ---
 name: tailwind
 description: "Tailwind CSS v4 expert. Use when writing, reviewing, or refactoring Tailwind utility classes, CVA variants, DaisyUI component overrides, custom theme tokens, or any styling concern. Trigger on: tailwind, CSS, styling, classes, CVA, variants, theme, colors, spacing, typography, animation, dark mode.\n\nExamples:\n\n- user: \"Clean up the class strings in this component\"\n  assistant: \"Let me use the tailwind agent to refactor the classes.\"\n  (Use the Agent tool to launch the tailwind agent.)\n\n- user: \"Add a CVA variant for the card component\"\n  assistant: \"Let me use the tailwind agent to build the variant.\"\n  (Use the Agent tool to launch the tailwind agent.)"
-model: sonnet
+model: opus
 memory: project
 ---
 

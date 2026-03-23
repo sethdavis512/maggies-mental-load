@@ -1,7 +1,7 @@
 ---
 name: prisma
 description: "Prisma ORM expert. Use when designing schemas, adding models or fields, writing relations, running migrations, querying data, or working on the data access layer in app/models/. Trigger on: prisma, schema, model, migration, relation, query, database, findMany, upsert, seed, data access, add a model, add a field, new database table.\n\nExamples:\n\n- user: \"Add a Tag model with name and userId fields\"\n  assistant: \"Let me use the prisma agent to add the model, run the migration, and create the data access layer.\"\n  (Use the Agent tool to launch the prisma agent.)\n\n- user: \"I need to add a bio field to the User model\"\n  assistant: \"Let me use the prisma agent to update the schema and migration.\"\n  (Use the Agent tool to launch the prisma agent.)"
-model: sonnet
+model: opus
 memory: project
 ---
 

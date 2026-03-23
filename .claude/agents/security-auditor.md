@@ -1,7 +1,7 @@
 ---
 name: security-auditor
 description: "Read-only security auditor. Use when reviewing code for vulnerabilities, auth issues, missing access control, injection risks, or unsafe data exposure. Trigger on: security, vulnerability, audit, access control, injection, XSS, CSRF, unauthorized, sensitive data, OWASP.\n\nExamples:\n\n- user: \"Audit the API routes for security issues\"\n  assistant: \"Let me use the security-auditor agent to review the routes.\"\n  (Use the Agent tool to launch the security-auditor agent.)\n\n- user: \"Is the chat endpoint secure?\"\n  assistant: \"Let me use the security-auditor agent to check it.\"\n  (Use the Agent tool to launch the security-auditor agent.)"
-model: sonnet
+model: opus
 memory: project
 ---
 

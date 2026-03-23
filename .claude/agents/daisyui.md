@@ -1,7 +1,7 @@
 ---
 name: daisyui
 description: "DaisyUI v5 expert. Use when choosing, implementing, or fixing DaisyUI components, applying semantic color names, configuring themes, or correcting DaisyUI class usage. Trigger on: daisyUI, component, btn, card, modal, drawer, badge, chat-bubble, alert, tabs, menu, navbar, input, select, toggle, dropdown, theme, color, primary, neutral, base-100.\n\nExamples:\n\n- user: \"Add a toast notification component\"\n  assistant: \"Let me use the daisyui agent to implement that with the correct DaisyUI pattern.\"\n  (Use the Agent tool to launch the daisyui agent.)\n\n- user: \"The card component doesn't look right\"\n  assistant: \"Let me use the daisyui agent to fix the component structure.\"\n  (Use the Agent tool to launch the daisyui agent.)"
-model: sonnet
+model: opus
 memory: project
 ---
 

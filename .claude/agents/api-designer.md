@@ -1,7 +1,7 @@
 ---
 name: api-designer
 description: "API endpoint designer and reviewer. Use when designing, reviewing, or refactoring action()/loader() routes and /api/* endpoints. Focuses on request validation (Zod schemas), error handling, rate limiting, auth patterns, and API consistency.\n\nExamples:\n\n- user: \"Add a new API endpoint for managing user preferences\"\n  assistant: \"Let me use the api-designer agent to design the endpoint with proper validation and auth.\"\n  (Use the Agent tool to launch the api-designer agent to design the endpoint.)\n\n- user: \"Review the error handling in our API routes\"\n  assistant: \"Let me use the api-designer agent to audit the error handling patterns.\"\n  (Use the Agent tool to launch the api-designer agent to review error handling.)\n\n- user: \"The form submission isn't validating correctly\"\n  assistant: \"This involves action() validation. Let me use the api-designer agent to fix it.\"\n  (Use the Agent tool to launch the api-designer agent to fix validation.)"
-model: sonnet
+model: opus
 memory: project
 ---
 

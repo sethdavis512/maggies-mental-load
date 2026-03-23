@@ -1,7 +1,7 @@
 ---
 name: mobile-first
 description: "Mobile-first and responsive design expert. Use when auditing, implementing, or fixing responsive layouts, Tailwind breakpoints, touch targets, overflow issues, viewport sizing, or any mobile UX problem. Trigger on: mobile, responsive, breakpoint, sm:, md:, viewport, overflow, touch, scroll, tablet, phone.\n\nExamples:\n\n- user: \"The chat page looks broken on mobile\"\n  assistant: \"Let me use the mobile-first agent to fix the responsive layout.\"\n  (Use the Agent tool to launch the mobile-first agent.)\n\n- user: \"Make the sidebar collapse on small screens\"\n  assistant: \"Let me use the mobile-first agent to implement that.\"\n  (Use the Agent tool to launch the mobile-first agent.)"
-model: sonnet
+model: opus
 memory: project
 ---
 

@@ -144,6 +144,8 @@ Prisma CLI: always use `bunx --bun prisma <command>`.
 ## Cross-Repo Hardening Feedback Loop
 
 - This repo is also used to harden `~/repositories/iridium`.
+- Any LLM/agent working in this repository must use the Linear MCP to log
+  tickets for meaningful work items and follow-ups.
 - When a security, reliability, or architecture hardening improvement here is
   likely reusable upstream, document it in the relevant Linear project.
 - Include enough detail for backporting: problem/risk, fix summary, files

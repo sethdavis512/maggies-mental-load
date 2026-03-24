@@ -25,6 +25,7 @@ model User {
     threads       Thread[]
     messages      Message[]
     notes         Note[]
+    tasks         Task[]
 
     @@unique([email])
     @@map("user")
@@ -128,4 +129,21 @@ model Note {
 
     @@index([userId])
     @@map("note")
+}
+
+model Task {
+    id          String    @id @default(cuid())
+    title       String
+    category    String
+    urgency     String    @default("none")
+    deadline    DateTime?
+    completedAt DateTime?
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+    userId      String
+    user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId, completedAt])
+    @@index([userId, deadline])
+    @@map("task")
 }

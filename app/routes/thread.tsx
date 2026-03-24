@@ -10,9 +10,17 @@ import {
     WrenchIcon,
     XIcon,
 } from 'lucide-react';
+import {
+    Alert,
+    AlertDescription,
+    Badge,
+    Button,
+    Input as RivetInput,
+} from 'rivet-ui';
 import { ChatBubble } from '~/components/ChatBubble';
 import { Markdown } from '~/components/Markdown';
 import { NoteToolPart } from '~/components/NoteToolPart';
+import { TaskToolPart } from '~/components/TaskToolPart';
 import type { Route } from './+types/thread';
 import { getThreadById } from '~/models/thread.server';
 import { authMiddleware } from '~/middleware/auth';
@@ -50,6 +58,14 @@ const PRESET_MESSAGES = [
     {
         label: 'Save Note',
         value: 'Create a note capturing the key insights and action items from our conversation so far.',
+    },
+    {
+        label: 'Plan my week',
+        value: 'Show me what is on my task list and help me plan and prioritize for the week ahead.',
+    },
+    {
+        label: 'My Tasks',
+        value: 'List all of my current household tasks grouped by category.',
     },
 ];
 
@@ -110,6 +126,7 @@ function isToolPart(part: {
 }
 
 const NOTE_TOOLS = new Set(['create_note', 'list_notes', 'search_notes']);
+const TASK_TOOLS = new Set(['create_task', 'list_tasks', 'complete_task']);
 function ToolPartFallback({ part }: { part: ToolPart }) {
     return (
         <div className="mt-1 flex items-center gap-1 text-xs opacity-70">
@@ -164,15 +181,15 @@ export default function ThreadRoute({
     return (
         <>
             {error && (
-                <div role="alert" className="alert alert-error">
-                    <CircleXIcon aria-hidden="true" className="h-5 w-5" />
+                <Alert variant="error">
                     <div className="flex w-full items-center justify-between gap-2">
-                        <span>
+                        <AlertDescription>
                             We hit a snag loading this response. Try again.
-                        </span>
+                        </AlertDescription>
                         <div className="flex gap-1">
-                            <button
-                                className="btn btn-sm"
+                            <Button
+                                variant="outline"
+                                size="sm"
                                 onClick={() => regenerate()}
                             >
                                 <RefreshCwIcon
@@ -180,17 +197,18 @@ export default function ThreadRoute({
                                     className="h-4 w-4"
                                 />
                                 Retry
-                            </button>
-                            <button
-                                className="btn btn-ghost btn-sm"
+                            </Button>
+                            <Button
+                                variant="ghost"
+                                size="sm"
                                 onClick={() => clearError()}
                             >
                                 <XIcon aria-hidden="true" className="h-4 w-4" />
                                 Dismiss
-                            </button>
+                            </Button>
                         </div>
                     </div>
-                </div>
+                </Alert>
             )}
             <div
                 ref={messageRef}
@@ -223,33 +241,48 @@ export default function ThreadRoute({
                                 {textContent && (
                                     <Markdown>{textContent}</Markdown>
                                 )}
-                                {toolParts.map((part) =>
-                                    NOTE_TOOLS.has(part.toolName) ? (
-                                        <NoteToolPart
-                                            key={part.toolCallId}
-                                            toolName={part.toolName}
-                                            state={part.state}
-                                            output={
-                                                part.state ===
-                                                'output-available'
-                                                    ? (
-                                                          part as unknown as {
-                                                              output: Record<
-                                                                  string,
-                                                                  unknown
-                                                              >;
-                                                          }
-                                                      ).output
-                                                    : undefined
-                                            }
-                                        />
-                                    ) : (
+                                {toolParts.map((part) => {
+                                    const output =
+                                        part.state === 'output-available'
+                                            ? (
+                                                  part as unknown as {
+                                                      output: Record<
+                                                          string,
+                                                          unknown
+                                                      >;
+                                                  }
+                                              ).output
+                                            : undefined;
+
+                                    if (NOTE_TOOLS.has(part.toolName)) {
+                                        return (
+                                            <NoteToolPart
+                                                key={part.toolCallId}
+                                                toolName={part.toolName}
+                                                state={part.state}
+                                                output={output}
+                                            />
+                                        );
+                                    }
+
+                                    if (TASK_TOOLS.has(part.toolName)) {
+                                        return (
+                                            <TaskToolPart
+                                                key={part.toolCallId}
+                                                toolName={part.toolName}
+                                                state={part.state}
+                                                output={output}
+                                            />
+                                        );
+                                    }
+
+                                    return (
                                         <ToolPartFallback
                                             key={part.toolCallId}
                                             part={part}
                                         />
-                                    ),
-                                )}
+                                    );
+                                })}
                                 {!textContent &&
                                     toolParts.length === 0 &&
                                     !isUser &&
@@ -282,9 +315,7 @@ export default function ThreadRoute({
                 ) : (
                     <div className="border-kraft/12 bg-canvas rounded-box mx-auto mt-auto max-w-md border p-4 text-center">
                         <div className="space-y-2">
-                            <span className="badge badge-warning badge-outline">
-                                Ready when you are
-                            </span>
+                            <Badge variant="mustard">Ready when you are</Badge>
                             <p className="text-kraft/70 text-sm">
                                 Start with one sentence. Maggie will help you
                                 turn it into a plan.
@@ -296,25 +327,27 @@ export default function ThreadRoute({
             <div className="flex flex-col gap-1.5">
                 <div className="flex flex-wrap gap-1.5 px-1">
                     {PRESET_MESSAGES.map(({ label, value }) => (
-                        <button
+                        <Button
                             key={label}
                             type="button"
-                            className="btn btn-content btn-xs rounded-full"
+                            variant="ghost"
+                            size="sm"
+                            className="rounded-full"
                             onClick={() => sendMessage({ text: value })}
                             disabled={status !== 'ready'}
                             title={value}
                         >
                             {label}
-                        </button>
+                        </Button>
                     ))}
                 </div>
                 <div className="rounded-box border-base-300 bg-base-100 flex items-center gap-2 border p-2">
-                    <input
+                    <RivetInput
                         id="chat-message-input"
                         type="text"
                         aria-label="Message"
-                        className="input rounded-field bg-canvas grow"
-                        placeholder="What’s on your mind right now?"
+                        className="grow"
+                        placeholder="What's on your mind right now?"
                         value={chatInput}
                         onChange={(e) => setChatInput(e.target.value)}
                         onKeyDown={(e) => {
@@ -325,8 +358,9 @@ export default function ThreadRoute({
                         }}
                         disabled={status !== 'ready'}
                     />
-                    <button
-                        className="btn btn-sm"
+                    <Button
+                        variant="outline"
+                        size="sm"
                         onClick={stop}
                         disabled={
                             status !== 'streaming' && status !== 'submitted'
@@ -337,9 +371,10 @@ export default function ThreadRoute({
                             className="h-6 w-6"
                         />{' '}
                         Pause
-                    </button>
-                    <button
-                        className="btn btn-primary btn-sm"
+                    </Button>
+                    <Button
+                        variant="primary"
+                        size="sm"
                         onClick={handleSend}
                         disabled={status !== 'ready'}
                     >
@@ -348,7 +383,7 @@ export default function ThreadRoute({
                             className="h-6 w-6"
                         />{' '}
                         Send
-                    </button>
+                    </Button>
                 </div>
             </div>
         </>
@@ -360,21 +395,19 @@ export function ErrorBoundary() {
 
     if (isRouteErrorResponse(error)) {
         return (
-            <div role="alert" className="alert alert-error">
-                <CircleXIcon aria-hidden="true" className="h-6 w-6" />
-                <span>
+            <Alert variant="error" role="alert">
+                <AlertDescription>
                     {error.status} {error.statusText}
-                </span>
-            </div>
+                </AlertDescription>
+            </Alert>
         );
     }
 
     return (
-        <div role="alert" className="alert alert-error">
-            <CircleXIcon aria-hidden="true" className="h-6 w-6" />
-            <span>
+        <Alert variant="error" role="alert">
+            <AlertDescription>
                 Experiencing technical difficulties. Please try again later.
-            </span>
-        </div>
+            </AlertDescription>
+        </Alert>
     );
 }

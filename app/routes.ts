@@ -21,6 +21,7 @@ export default [
             index('routes/chat-index.tsx'),
             route(':threadId', 'routes/thread.tsx'),
         ]),
+        route('/tasks', 'routes/tasks.tsx'),
         route('/notes', 'routes/notes.tsx'),
         route('/profile', 'routes/profile.tsx'),
     ]),

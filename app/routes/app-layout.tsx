@@ -48,7 +48,7 @@ function DrawerContent({
             <ul className="flex flex-col gap-4">
                 <li>
                     <NavLink
-                        to="/"
+                        to="/dashboard"
                         className={navLinkClassName}
                         onClick={onClose}
                     >
@@ -289,7 +289,7 @@ export default function AppLayout({ loaderData }: Route.ComponentProps) {
                                 <ul className="flex flex-col gap-4 p-4">
                                     <li>
                                         <NavLink
-                                            to="/"
+                                            to="/dashboard"
                                             className={navLinkClassName}
                                         >
                                             <HomeIcon

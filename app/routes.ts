@@ -7,6 +7,7 @@ import {
 } from '@react-router/dev/routes';
 
 export default [
+    index('routes/landing.tsx'),
     route('/login', 'routes/login.tsx'),
     route('/logout', 'routes/logout.tsx'),
     route('/healthcheck', 'routes/healthcheck.ts'),
@@ -15,7 +16,7 @@ export default [
         route('/chat', 'routes/api-chat.ts'),
     ]),
     layout('routes/app-layout.tsx', [
-        index('routes/home.tsx'),
+        route('/dashboard', 'routes/home.tsx'),
         route('/chat', 'routes/chat.tsx', [
             index('routes/chat-index.tsx'),
             route(':threadId', 'routes/thread.tsx'),

@@ -18,7 +18,7 @@ import {
 export default function Home() {
     return (
         <>
-            <title>Home | maggies-mental-load</title>
+            <title>Dashboard | Maggie&apos;s Mental Load</title>
             <meta
                 name="description"
                 content="A warm, action-ready home command center that helps working moms reduce mental load and keep household life moving."

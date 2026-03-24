@@ -101,14 +101,8 @@ export default function LoginRoute() {
             <div className="bg-canvas flex h-full flex-col overflow-y-auto md:flex-row">
                 {/* ── Image / brand panel ── */}
                 <div className="relative flex flex-col justify-between overflow-hidden px-8 py-10 md:w-1/2 md:px-12 md:py-14 lg:w-[55%]">
-                    {/*
-                     * IMAGE PLACEHOLDER
-                     * Replace the gradient below with your hero image:
-                     *   <img src="/images/auth-hero.jpg" alt="" className="absolute inset-0 h-full w-full object-cover" />
-                     * Keep the overlay div for text readability.
-                     */}
-                    <div className="from-denim via-denim/85 to-ribbon/70 absolute inset-0 bg-gradient-to-br" />
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,_oklch(72%_0.14_75_/_0.12),_transparent_60%)]" />
+                    <img src="/login-hero.jpeg" alt="" className="absolute inset-0 h-full w-full object-cover" />
+                    <div className="absolute inset-0 bg-black/40" />
 
                     <div className="relative z-10">
                         <Link

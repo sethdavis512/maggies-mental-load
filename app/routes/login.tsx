@@ -54,7 +54,7 @@ export default function LoginRoute() {
             return;
         }
 
-        const callbackURL = `${window.location.origin}/chat`;
+        const callbackURL = '/chat';
 
         if (isSignIn) {
             await authClient.signIn.email(

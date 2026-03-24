@@ -42,7 +42,7 @@ export async function requireAnonymous(request: Request) {
     if (user) {
         throw new Response('Already authenticated', {
             status: 302,
-            headers: { Location: '/dashboard' },
+            headers: { Location: '/chat' },
         });
     }
 }

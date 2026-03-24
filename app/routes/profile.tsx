@@ -4,6 +4,7 @@ import type { Route } from './+types/profile';
 import { getUserFromSession } from '~/models/session.server';
 import { authMiddleware } from '~/middleware/auth';
 import { MailIcon, ShieldCheckIcon } from 'lucide-react';
+import { Badge, Card, CardContent } from 'rivet-ui';
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
@@ -26,27 +27,32 @@ export default function ProfileRoute({ loaderData }: Route.ComponentProps) {
                 name="description"
                 content="View your household account details and permission level."
             />
-            <Container className="p-2 md:p-4">
-                <section className="border-kraft/12 bg-surface rounded-box max-w-2xl border p-6">
-                    <header className="pb-2">
-                        <h1 className="font-display text-2xl">Profile</h1>
+            <Container className="px-1 py-2 md:px-2 md:py-3">
+                <header className="border-kraft/10 mb-6 border-b pb-6">
+                    <div className="space-y-1">
+                        <Badge variant="denim">Your account</Badge>
+                        <h1 className="font-display text-kraft text-3xl font-semibold">
+                            Profile
+                        </h1>
                         <p className="text-kraft/65 text-sm">
                             Your account details and workspace permissions.
                         </p>
-                    </header>
-                    <div className="space-y-4">
+                    </div>
+                </header>
+                <Card className="max-w-2xl">
+                    <CardContent className="space-y-4">
                         <div className="flex items-center gap-2">
                             <ShieldCheckIcon className="text-denim h-4 w-4" />
-                            <span className="badge badge-outline">
+                            <Badge variant="outline">
                                 {isAdmin ? 'Admin' : 'Member'}
-                            </span>
+                            </Badge>
                         </div>
                         <div className="text-kraft/75 flex items-center gap-2 text-sm">
                             <MailIcon className="text-denim h-4 w-4" />
                             <span>{loaderData.user.email}</span>
                         </div>
-                    </div>
-                </section>
+                    </CardContent>
+                </Card>
             </Container>
         </>
     );

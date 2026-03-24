@@ -20,6 +20,7 @@ import {
     useSubmit,
 } from 'react-router';
 import { LoaderCircleIcon, PlusCircleIcon, Trash2Icon } from 'lucide-react';
+import { Badge, Button } from 'rivet-ui';
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
@@ -121,12 +122,10 @@ export default function ChatRoute({ loaderData }: Route.ComponentProps) {
                 name="description"
                 content="Capture thoughts, organize priorities, and turn overwhelm into actionable household plans."
             />
-            <Container className="flex h-full flex-col gap-4 p-2 md:p-3">
+            <Container className="flex min-h-0 grow flex-col gap-4 p-2 md:p-3">
                 <header className="border-kraft/10 flex flex-col gap-3 border-b pb-6 sm:flex-row sm:items-start sm:justify-between">
                     <div className="space-y-1">
-                        <span className="badge badge-info badge-outline">
-                            Private workspace
-                        </span>
+                        <Badge variant="denim">Private workspace</Badge>
                         <h1 className="font-display text-kraft text-3xl font-semibold">
                             Plan with Maggie
                         </h1>
@@ -137,10 +136,11 @@ export default function ChatRoute({ loaderData }: Route.ComponentProps) {
                     </div>
                     <Form method="POST">
                         <input type="hidden" name="intent" value="new-thread" />
-                        <button
+                        <Button
                             type="submit"
                             disabled={isCreating}
-                            className="btn btn-primary btn-sm"
+                            variant="primary"
+                            size="sm"
                         >
                             {isCreating ? (
                                 <LoaderCircleIcon
@@ -153,12 +153,12 @@ export default function ChatRoute({ loaderData }: Route.ComponentProps) {
                                     className="h-4 w-4"
                                 />
                             )}
-                            New thread
-                        </button>
+                            <span className="ml-2">New thread</span>{' '}
+                        </Button>
                     </Form>
                 </header>
-                <div className="grid min-h-0 grow grid-cols-1 grid-rows-[auto_1fr] gap-4 md:grid-cols-12 md:grid-rows-none">
-                    <section className="border-kraft/12 bg-canvas rounded-box col-span-1 overflow-y-auto border p-3 md:col-span-5 lg:col-span-4">
+                <div className="grid min-h-0 grow grid-cols-1 grid-rows-[1fr_1fr] gap-4 md:grid-cols-12 md:grid-rows-[1fr]">
+                    <section className="border-kraft/12 bg-canvas rounded-box col-span-1 min-h-0 overflow-y-auto border p-3 md:col-span-5 lg:col-span-4">
                         <nav aria-label="Conversations">
                             <ul className="flex flex-col gap-4">
                                 {loaderData.threads &&
@@ -206,7 +206,7 @@ export default function ChatRoute({ loaderData }: Route.ComponentProps) {
                             </ul>
                         </nav>
                     </section>
-                    <div className="col-span-1 flex min-h-0 flex-col gap-4 overflow-hidden md:col-span-7 lg:col-span-8">
+                    <div className="col-span-1 flex min-h-0 flex-col overflow-hidden md:col-span-7 lg:col-span-8">
                         <Outlet />
                     </div>
                 </div>
@@ -224,11 +224,11 @@ export default function ChatRoute({ loaderData }: Route.ComponentProps) {
                         This permanently removes the thread and its messages.
                     </p>
                     <div className="modal-action">
-                        <button className="btn" onClick={closeDeleteDialog}>
+                        <Button variant="outline" onClick={closeDeleteDialog}>
                             Keep conversation
-                        </button>
-                        <button
-                            className="btn btn-error"
+                        </Button>
+                        <Button
+                            variant="destructive"
                             onClick={() => {
                                 const form = new FormData();
                                 form.set('intent', 'delete-thread');
@@ -238,7 +238,7 @@ export default function ChatRoute({ loaderData }: Route.ComponentProps) {
                             }}
                         >
                             Delete conversation
-                        </button>
+                        </Button>
                     </div>
                 </div>
                 <form method="dialog" className="modal-backdrop">

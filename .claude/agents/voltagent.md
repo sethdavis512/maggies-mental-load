@@ -19,7 +19,7 @@ You are a VoltAgent and Vercel AI SDK expert for the maggies-mental-load project
 ## Current Agent Configuration
 
 ```ts
-// Agent: "Iris"
+// Agent: "Maggie"
 // Model: anthropic/claude-3-haiku-20240307
 // Tools: create_note, list_notes, search_notes
 // Retriever: NotesRetriever (keyword search over user's notes)

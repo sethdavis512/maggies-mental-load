@@ -1,5 +1,6 @@
 @import 'tailwindcss';
-@import 'rivet-ui/styles';
+@import 'rivet-ui/theme';
+@import 'rivet-ui/styles' layer(components);
 
 @theme {
     --font-sans:
@@ -12,6 +13,60 @@
 @plugin '@tailwindcss/typography';
 
 @plugin 'daisyui' {
-    themes: workshop --default;
-    /* dark --prefersdark */
+    themes: light --default;
+}
+
+/*
+ * Map rivet design tokens into DaisyUI semantic slots.
+ * This overrides DaisyUI's default "light" palette with
+ * the warm kraft/denim/ribbon/mustard brand palette.
+ */
+@layer base {
+    :root {
+        /* Base surfaces — warm cream/tan */
+        --color-base-100: var(--color-surface);
+        --color-base-200: oklch(94% 0.015 70);
+        --color-base-300: oklch(90% 0.025 70);
+        --color-base-content: var(--color-kraft);
+
+        /* Primary — denim blue (CTAs, links) */
+        --color-primary: var(--color-denim);
+        --color-primary-content: oklch(97% 0.005 250);
+
+        /* Secondary — ribbon teal (supporting actions) */
+        --color-secondary: var(--color-ribbon);
+        --color-secondary-content: oklch(97% 0.005 185);
+
+        /* Accent — mustard (highlights, badges) */
+        --color-accent: var(--color-mustard);
+        --color-accent-content: oklch(30% 0.04 55);
+
+        /* Neutral — kraft brown (text, borders, muted elements) */
+        --color-neutral: var(--color-kraft);
+        --color-neutral-content: oklch(94% 0.015 70);
+
+        /* Status colors — slightly warm-shifted */
+        --color-info: oklch(62% 0.14 240);
+        --color-info-content: oklch(97% 0.01 240);
+        --color-success: oklch(62% 0.16 155);
+        --color-success-content: oklch(97% 0.01 155);
+        --color-warning: oklch(75% 0.16 70);
+        --color-warning-content: oklch(30% 0.06 55);
+        --color-error: var(--color-spool);
+        --color-error-content: oklch(97% 0.01 22);
+
+        /* Rounded corners — softer, friendlier feel */
+        --radius-selector: 0.5rem;
+        --radius-field: 0.5rem;
+        --radius-box: 0.75rem;
+
+        /* Sizing — slightly larger for comfortable touch targets */
+        --size-selector: 0.25rem;
+        --size-field: 0.25rem;
+
+        /* Border and depth — subtle, warm */
+        --border: 1px;
+        --depth: 1;
+        --noise: 0;
+    }
 }

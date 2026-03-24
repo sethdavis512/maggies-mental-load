@@ -5,6 +5,17 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { authClient } from '~/lib/auth.client';
+import {
+    Alert,
+    AlertDescription,
+    Badge,
+    Button,
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+    Input as RivetInput,
+} from 'rivet-ui';
 
 const formSchema = z.object({
     name: z.string().optional(),
@@ -80,32 +91,25 @@ export function Turnstile() {
                 }
             />
             <div className="mx-auto w-full max-w-md p-2 md:p-4">
-                <div className="border-kraft/12 bg-surface rounded-box border p-6">
-                    <div className="space-y-2 pb-2">
-                        <span className="badge badge-warning badge-outline w-fit">
+                <Card>
+                    <CardHeader>
+                        <Badge variant="mustard" className="w-fit">
                             Private and secure
-                        </span>
-                        <h2 className="font-display text-2xl">
+                        </Badge>
+                        <CardTitle>
                             {isSignIn ? 'Welcome back' : 'Create your account'}
-                        </h2>
+                        </CardTitle>
                         <p className="text-kraft/65 text-sm">
                             {isSignIn
                                 ? 'Pick up where you left off.'
                                 : 'Start organizing your household with less mental clutter.'}
                         </p>
-                    </div>
-                    <div>
+                    </CardHeader>
+                    <CardContent>
                         {formError && (
-                            <div
-                                role="alert"
-                                className="alert alert-error mb-4"
-                            >
-                                <CircleXIcon
-                                    aria-hidden="true"
-                                    className="h-6 w-6"
-                                />
-                                <span>{formError}</span>
-                            </div>
+                            <Alert variant="error" className="mb-4">
+                                <AlertDescription>{formError}</AlertDescription>
+                            </Alert>
                         )}
                         <div>
                             <div className="join mb-4">
@@ -139,10 +143,14 @@ export function Turnstile() {
                                         <legend className="fieldset-legend">
                                             Name
                                         </legend>
-                                        <input
+                                        <RivetInput
                                             type="text"
-                                            className="input"
                                             placeholder="What should Maggie call you?"
+                                            variant={
+                                                errors.name
+                                                    ? 'error'
+                                                    : 'default'
+                                            }
                                             aria-describedby={
                                                 errors.name
                                                     ? 'name-error'
@@ -167,10 +175,12 @@ export function Turnstile() {
                                     <legend className="fieldset-legend">
                                         Email address
                                     </legend>
-                                    <input
+                                    <RivetInput
                                         type="email"
-                                        className="input"
                                         placeholder="you@example.com"
+                                        variant={
+                                            errors.email ? 'error' : 'default'
+                                        }
                                         aria-describedby={
                                             errors.email
                                                 ? 'email-error'
@@ -194,10 +204,14 @@ export function Turnstile() {
                                     <legend className="fieldset-legend">
                                         Password
                                     </legend>
-                                    <input
+                                    <RivetInput
                                         type="password"
-                                        className="input"
                                         placeholder="At least 8 characters"
+                                        variant={
+                                            errors.password
+                                                ? 'error'
+                                                : 'default'
+                                        }
                                         aria-describedby={
                                             errors.password
                                                 ? 'password-error'
@@ -214,9 +228,9 @@ export function Turnstile() {
                                         </p>
                                     )}
                                 </fieldset>
-                                <button
+                                <Button
                                     type="submit"
-                                    className="btn btn-primary"
+                                    variant="primary"
                                     disabled={isSubmitting}
                                 >
                                     {isSubmitting ? (
@@ -230,11 +244,11 @@ export function Turnstile() {
                                     ) : (
                                         'Register'
                                     )}
-                                </button>
+                                </Button>
                             </form>
                         </div>
-                    </div>
-                </div>
+                    </CardContent>
+                </Card>
             </div>
         </>
     );

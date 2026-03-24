@@ -28,11 +28,6 @@ const SCREEN_TARGETS: ScreenTarget[] = [
         route: '/notes',
         waitFor: { role: 'heading', name: 'Saved notes' },
     },
-    {
-        name: 'form',
-        route: '/form',
-        waitFor: { role: 'heading', name: 'Form' },
-    },
 ];
 
 const OUTPUT_DIR_ENV = 'SCREENSHOT_OUTPUT_DIR';

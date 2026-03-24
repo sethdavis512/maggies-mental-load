@@ -7,6 +7,7 @@ import { getNotesByUserId } from '~/models/note.server';
 import { authMiddleware } from '~/middleware/auth';
 import { FileTextIcon } from 'lucide-react';
 import { Link } from 'react-router';
+import { Badge, Card, CardContent, CardHeader } from 'rivet-ui';
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
@@ -32,9 +33,9 @@ export default function NotesRoute({ loaderData }: Route.ComponentProps) {
             <div className="h-full overflow-y-auto">
                 <Container className="p-2 md:p-4">
                     <header className="border-kraft/10 mb-5 border-b pb-6">
-                        <span className="badge badge-warning badge-outline mb-2">
+                        <Badge variant="mustard" className="mb-2">
                             Memory
-                        </span>
+                        </Badge>
                         <h1 className="font-display text-kraft text-3xl font-semibold">
                             Saved notes
                         </h1>
@@ -45,52 +46,51 @@ export default function NotesRoute({ loaderData }: Route.ComponentProps) {
                     {notes.length > 0 ? (
                         <ul className="mt-5 space-y-4">
                             {notes.map((note) => (
-                                <li
-                                    key={note.id}
-                                    className="border-kraft/12 bg-surface rounded-box border"
-                                >
-                                    <div className="px-6 pt-6 pb-2">
-                                        <div className="flex items-start gap-3">
-                                            <FileTextIcon
-                                                aria-hidden="true"
-                                                className="text-spool mt-1 h-5 w-5 shrink-0"
-                                            />
-                                            <div className="min-w-0">
-                                                <h2 className="text-lg font-semibold">
-                                                    {note.title}
-                                                </h2>
-                                                <time
-                                                    className="text-kraft/55 mt-1 block text-xs"
-                                                    dateTime={new Date(
-                                                        note.createdAt,
-                                                    ).toISOString()}
-                                                >
-                                                    {new Date(
-                                                        note.createdAt,
-                                                    ).toLocaleDateString(
-                                                        undefined,
-                                                        {
-                                                            year: 'numeric',
-                                                            month: 'long',
-                                                            day: 'numeric',
-                                                        },
-                                                    )}
-                                                </time>
+                                <li key={note.id}>
+                                    <Card>
+                                        <CardHeader>
+                                            <div className="flex items-start gap-3">
+                                                <FileTextIcon
+                                                    aria-hidden="true"
+                                                    className="text-spool mt-1 h-5 w-5 shrink-0"
+                                                />
+                                                <div className="min-w-0">
+                                                    <h2 className="text-lg font-semibold">
+                                                        {note.title}
+                                                    </h2>
+                                                    <time
+                                                        className="text-kraft/55 mt-1 block text-xs"
+                                                        dateTime={new Date(
+                                                            note.createdAt,
+                                                        ).toISOString()}
+                                                    >
+                                                        {new Date(
+                                                            note.createdAt,
+                                                        ).toLocaleDateString(
+                                                            undefined,
+                                                            {
+                                                                year: 'numeric',
+                                                                month: 'long',
+                                                                day: 'numeric',
+                                                            },
+                                                        )}
+                                                    </time>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div className="px-6 pt-0 pb-6">
-                                        <details>
-                                            <summary className="text-denim cursor-pointer text-sm font-medium">
-                                                Read note
-                                            </summary>
-                                            <div className="text-kraft/75 mt-2 text-sm">
-                                                <Markdown>
-                                                    {note.content}
-                                                </Markdown>
-                                            </div>
-                                        </details>
-                                    </div>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <details>
+                                                <summary className="text-denim cursor-pointer text-sm font-medium">
+                                                    Read note
+                                                </summary>
+                                                <div className="text-kraft/75 mt-2 text-sm">
+                                                    <Markdown>
+                                                        {note.content}
+                                                    </Markdown>
+                                                </div>
+                                            </details>
+                                        </CardContent>
+                                    </Card>
                                 </li>
                             ))}
                         </ul>

@@ -1,5 +1,5 @@
 {
-    "name": "users-seth-repositories-maggies-mental-load",
+    "name": "maggies-mental-load",
     "private": true,
     "type": "module",
     "scripts": {
@@ -36,7 +36,6 @@
         "@voltagent/core": "^2.6.12",
         "@voltagent/postgres": "^2.1.2",
         "ai": "^6.0.134",
-        "base-ui": "^0.0.294",
         "better-auth": "^1.5.6",
         "cva": "^1.0.0-beta.4",
         "dotenv": "^17.3.1",
@@ -48,7 +47,7 @@
         "react-hook-form": "^7.72.0",
         "react-markdown": "^10.1.0",
         "react-router": "7.12.0",
-        "rivet-ui": "^0.2.0",
+        "rivet-ui": "^0.3.0",
         "tailwind-merge": "^3.5.0",
         "tailwindcss-animate": "^1.0.7",
         "tiny-invariant": "^1.3.3",

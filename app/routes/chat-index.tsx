@@ -1,4 +1,5 @@
 import { SpoolIcon } from 'lucide-react';
+import { Badge } from 'rivet-ui';
 
 export default function ChatIndexRoute() {
     return (
@@ -11,9 +12,7 @@ export default function ChatIndexRoute() {
                 <p className="text-kraft/65 text-sm">
                     Or start a new thread for tonight&apos;s planning.
                 </p>
-                <span className="badge badge-warning badge-outline">
-                    You&apos;ve got this
-                </span>
+                <Badge variant="mustard">You&apos;ve got this</Badge>
             </div>
         </div>
     );

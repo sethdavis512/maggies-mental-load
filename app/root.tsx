@@ -18,7 +18,6 @@ import {
     useNavigation,
 } from 'react-router';
 import {
-    FormIcon,
     HomeIcon,
     LockIcon,
     LogOutIcon,
@@ -32,6 +31,7 @@ import type { Route } from './+types/root';
 import { Container } from './components/Container';
 import { listItemClassName, navLinkClassName } from './shared';
 import { Drawer } from './components/Drawer';
+import { Badge, Button, buttonVariants } from 'rivet-ui';
 
 import './app.css';
 
@@ -139,19 +139,6 @@ function DrawerContent({
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink
-                                to="/form"
-                                className={navLinkClassName}
-                                onClick={onClose}
-                            >
-                                <FormIcon
-                                    aria-hidden="true"
-                                    className="h-6 w-6"
-                                />
-                                Form
-                            </NavLink>
-                        </li>
-                        <li>
                             <Form
                                 method="POST"
                                 action="/logout"
@@ -244,19 +231,16 @@ export default function App({ loaderData }: Route.ComponentProps) {
                     className="bg-base-100/95 border-kraft/12 border-b py-4 backdrop-blur-sm"
                 >
                     <Container className="flex items-center justify-between">
-                        <ul className="flex gap-4 lg:gap-0 px-4 lg:px-0">
+                        <ul className="flex gap-4 px-4">
                             <li>
                                 <Link
                                     to="/"
-                                    className="hover:bg-kraft/6 flex items-center gap-2.5 rounded-full py-1 transition-colors"
+                                    className="hover:bg-kraft/6 flex items-center gap-2.5 rounded-full px-2 py-1 transition-colors"
                                 >
                                     <div className="flex flex-col leading-tight">
                                         <strong className="font-display text-kraft text-[1.05rem] font-semibold tracking-tight">
                                             Maggie&apos;s Mental Load
                                         </strong>
-                                        <span className="text-kraft/55 text-[11px] font-medium tracking-wide uppercase">
-                                            Mental Load, Managed.
-                                        </span>
                                     </div>
                                 </Link>
                             </li>
@@ -283,16 +267,18 @@ export default function App({ loaderData }: Route.ComponentProps) {
                                                 name="intent"
                                                 value="logout"
                                             />
-                                            <button
+                                            <Button
                                                 type="submit"
-                                                className="btn btn-sm rounded-full"
+                                                variant="outline"
+                                                size="sm"
+                                                className="rounded-full"
                                             >
                                                 <LogOutIcon
                                                     aria-hidden="true"
                                                     className="h-4 w-4"
                                                 />
                                                 Sign out
-                                            </button>
+                                            </Button>
                                         </Form>
                                     </li>
                                 </>
@@ -301,7 +287,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
                                 <li>
                                     <Link
                                         to="/login"
-                                        className="btn btn-primary btn-sm rounded-full"
+                                        className={`${buttonVariants({ variant: 'primary', size: 'sm' })} rounded-full`}
                                     >
                                         <LockIcon
                                             aria-hidden="true"
@@ -312,16 +298,17 @@ export default function App({ loaderData }: Route.ComponentProps) {
                                 </li>
                             )}
                         </ul>
-                        <button
+                        <Button
                             type="button"
-                            className="btn btn-ghost mx-4 px-2 md:hidden"
+                            variant="ghost"
+                            className="mx-4 px-2 md:hidden"
                             onClick={toggleDrawer}
                             aria-label="Open navigation menu"
                             aria-expanded={isDrawerOpen}
                             aria-controls="main-drawer"
                         >
                             <MenuIcon aria-hidden="true" className="h-6 w-6" />
-                        </button>
+                        </Button>
                     </Container>
                 </nav>
             </header>
@@ -337,9 +324,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
                                 <p className="text-kraft/55 text-xs font-semibold tracking-[0.14em] uppercase">
                                     Daily Dashboard
                                 </p>
-                                <span className="badge badge-warning badge-outline">
-                                    Today
-                                </span>
+                                <Badge variant="mustard">Today</Badge>
                             </div>
                             <nav aria-label="Main navigation">
                                 <ul className="flex flex-col gap-4 p-4">
@@ -393,26 +378,14 @@ export default function App({ loaderData }: Route.ComponentProps) {
                                                     Notes
                                                 </NavLink>
                                             </li>
-                                            <li>
-                                                <NavLink
-                                                    to="/form"
-                                                    className={navLinkClassName}
-                                                >
-                                                    <FormIcon
-                                                        aria-hidden="true"
-                                                        className="h-6 w-6"
-                                                    />
-                                                    Form
-                                                </NavLink>
-                                            </li>
                                         </>
                                     )}
                                 </ul>
                             </nav>
                         </div>
                     </div>
-                    <div className="border-kraft/12 bg-surface rounded-box col-span-1 min-h-0 overflow-y-auto border md:col-span-8 lg:col-span-9">
-                        <div className="min-h-0 p-4 md:p-6">
+                    <div className="border-kraft/12 bg-surface rounded-box col-span-1 flex min-h-0 flex-col overflow-y-auto border md:col-span-8 lg:col-span-9">
+                        <div className="flex min-h-0 grow flex-col p-4 md:p-6">
                             <Outlet />
                         </div>
                     </div>

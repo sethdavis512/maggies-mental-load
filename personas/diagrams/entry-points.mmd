@@ -1,0 +1,49 @@
+---
+title: Persona Entry Points and Session Patterns
+---
+flowchart TD
+    subgraph entry["First Session Entry Point"]
+        BD["🧠 Brain Dump\n(Option A)"]
+        PW["📋 Pick a Workflow\n(Option B)"]
+        CM["🔥 Chaos Mode\n(Auto-detected)"]
+    end
+
+    subgraph personas["Personas"]
+        Sarah["🧑 Sarah -- New Mom"]
+        Jess["🧑 Jess -- Juggler"]
+        Rachel["🧑 Rachel -- Transplant"]
+        Maya["🧑 Maya -- Optimizer"]
+        Kate["🧑 Kate -- Crisis Navigator"]
+    end
+
+    subgraph modes["Session Modes"]
+        QP["⚡ Quick Path\n10 min or less"]
+        FS["📝 Full Session\n30+ min deep dive"]
+        RS["🔄 Returning Session\nPick up where left off"]
+    end
+
+    Sarah --> BD
+    Jess --> PW
+    Rachel --> PW
+    Maya --> PW
+    Kate --> CM
+
+    BD --> FS
+    BD --> QP
+    PW --> FS
+    PW --> QP
+    CM --> QP
+
+    Sarah -.->|"typical repeat"| QP
+    Jess -.->|"typical repeat"| RS
+    Rachel -.->|"typical repeat"| FS
+    Maya -.->|"typical repeat"| RS
+    Kate -.->|"typical repeat"| QP
+
+    classDef entry fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#000
+    classDef persona fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#000
+    classDef mode fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#000
+
+    class BD,PW,CM entry
+    class Sarah,Jess,Rachel,Maya,Kate persona
+    class QP,FS,RS mode

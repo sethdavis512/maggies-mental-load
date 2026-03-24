@@ -43,7 +43,9 @@
       "Bash(node:*)",
       "Bash(find /Users/seth/repositories/maggies-mental-load/app/models -type f -name *.ts)",
       "Bash(railway add:*)",
-      "Bash(find /Users/seth/repositories/maggies-mental-load/node_modules/rivet-ui -name theme* -type f)"
+      "Bash(find /Users/seth/repositories/maggies-mental-load/node_modules/rivet-ui -name theme* -type f)",
+      "Bash(npx --yes @mermaid-js/mermaid-cli --version)",
+      "Bash(mmdc:*)"
     ]
   }
 }

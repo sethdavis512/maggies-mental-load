@@ -1,0 +1,57 @@
+---
+title: Chaos Mode Triggers by Persona
+---
+flowchart TD
+    CM["🔥 CHAOS MODE\nDrop all structure.\nOne question only."]
+
+    subgraph sarah_triggers["Sarah -- New Mom"]
+        ST1["Sick baby +\nwork deadline"]
+        ST2["Missed appointment\ndiscovered late"]
+        ST3["First solid food\npanic"]
+    end
+
+    subgraph jess_triggers["Jess -- Juggler"]
+        JT1["5pm arsenic hour\nno dinner plan"]
+        JT2["Partner travel week +\nsick toddler"]
+        JT3["Childcare fell\nthrough"]
+    end
+
+    subgraph rachel_triggers["Rachel -- Transplant"]
+        RT1["Mateo sick,\nno pediatrician yet"]
+        RT2["Something broke,\nno handyman contacts"]
+    end
+
+    subgraph maya_triggers["Maya -- Optimizer"]
+        MT1["Surprise $500+\nexpense"]
+        MT2["Holiday planning\ncollision"]
+    end
+
+    subgraph kate_triggers["Kate -- Crisis Navigator"]
+        KT1["Shift change +\ncustody handoff conflict"]
+        KT2["Missed 18-month\nwell visit"]
+        KT3["20 minutes to\nfigure out dinner"]
+    end
+
+    ST1 --> CM
+    ST2 --> CM
+    ST3 --> CM
+    JT1 --> CM
+    JT2 --> CM
+    JT3 --> CM
+    RT1 --> CM
+    RT2 --> CM
+    MT1 --> CM
+    MT2 --> CM
+    KT1 --> CM
+    KT2 --> CM
+    KT3 --> CM
+
+    CM --> Response["'What's the single most\nurgent thing right now?\nOne thing. We'll start there.'"]
+
+    classDef chaos fill:#dc2626,color:#fff,stroke:#991b1b,stroke-width:2px
+    classDef trigger fill:#fef3c7,stroke:#d97706,stroke-width:1px,color:#000
+    classDef response fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#000
+
+    class CM chaos
+    class ST1,ST2,ST3,JT1,JT2,JT3,RT1,RT2,MT1,MT2,KT1,KT2,KT3 trigger
+    class Response response

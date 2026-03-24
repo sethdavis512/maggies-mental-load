@@ -1,0 +1,60 @@
+---
+title: Persona Tier Progression
+---
+graph TD
+    subgraph tier1["Tier 1 -- Maggie Essential (Launch)"]
+        T1_Plan["Planning & Guidance"]
+        T1_MRL["Master Running List"]
+        T1_HM["Household Manual"]
+        T1_CW["Community Wisdom"]
+    end
+
+    subgraph tier2["Tier 2 -- Maggie Connected"]
+        T2_Cal["Calendar Integration"]
+        T2_Email["Email / Messaging"]
+        T2_Contacts["Contacts Access"]
+        T2_Reminders["Reminders"]
+    end
+
+    subgraph tier3["Tier 3 -- Maggie Pro"]
+        T3_Grocery["Auto Grocery Orders"]
+        T3_School["School Portal Sync"]
+        T3_Smart["Smart Home"]
+        T3_Auto["Full Autonomous Ops"]
+    end
+
+    %% Sarah's path
+    Sarah["🧑 Sarah\nNew Mom"] --> T1_Plan
+    Sarah -.->|"first upgrade ask"| T2_Cal
+    Sarah -.-x T3_Auto
+
+    %% Jess's path
+    Jess["🧑 Jess\nJuggler"] --> T1_Plan
+    Jess ==>|"game-changer"| T2_Cal
+    Jess ==>|"removes #1 friction"| T3_Grocery
+
+    %% Rachel's path
+    Rachel["🧑 Rachel\nTransplant"] --> T1_CW
+    Rachel --> T1_HM
+    Rachel -.->|"natural extension"| T2_Contacts
+    Rachel -.->|"when Mateo starts school"| T3_School
+
+    %% Maya's path
+    Maya["🧑 Maya\nOptimizer"] --> T1_HM
+    Maya ==>|"natural extension"| T2_Cal
+    Maya ==>|"end state goal"| T3_Auto
+
+    %% Kate's path
+    Kate["🧑 Kate\nCrisis Navigator"] --> T1_MRL
+    Kate ==>|"prevents missed appts"| T2_Reminders
+    Kate ==>|"biggest daily friction"| T3_Grocery
+
+    classDef persona fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#000
+    classDef t1 fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#000
+    classDef t2 fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#000
+    classDef t3 fill:#f3e8ff,stroke:#7c3aed,stroke-width:2px,color:#000
+
+    class Sarah,Jess,Rachel,Maya,Kate persona
+    class T1_Plan,T1_MRL,T1_HM,T1_CW t1
+    class T2_Cal,T2_Email,T2_Contacts,T2_Reminders t2
+    class T3_Grocery,T3_School,T3_Smart,T3_Auto t3

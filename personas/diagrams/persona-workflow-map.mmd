@@ -1,0 +1,62 @@
+---
+title: Persona-to-Workflow Priority Map
+---
+graph LR
+    %% Personas
+    Sarah["🧑 Sarah\nThe New Mom"]
+    Jess["🧑 Jess\nThe Juggler"]
+    Rachel["🧑 Rachel\nThe Transplant"]
+    Maya["🧑 Maya\nThe Optimizer"]
+    Kate["🧑 Kate\nThe Crisis Navigator"]
+
+    %% Workflows
+    MLC["🧠 Mental Load\nCapture"]
+    MG["🍽️ Meals &\nGrocery"]
+    HO["🏠 Home\nOperations"]
+    KF["🧒 Kids &\nFamily"]
+    SL["📅 Scheduling &\nLogistics"]
+    FB["💰 Finance &\nBudget"]
+    HM["📖 Household\nManual"]
+    CW["🌟 Community\nWisdom"]
+    SW["🌸 Seasonal\nWorkflows"]
+
+    %% Sarah connections (primary = thick)
+    Sarah ==>|"#1"| MLC
+    Sarah ==>|"#2"| KF
+    Sarah -->|"#3"| MG
+    Sarah -->|"#4"| SL
+
+    %% Jess connections
+    Jess ==>|"#1"| MG
+    Jess ==>|"#2"| SL
+    Jess -->|"#3"| KF
+    Jess -->|"#4"| HO
+    Jess -.->|"contributes"| CW
+
+    %% Rachel connections
+    Rachel ==>|"#1"| KF
+    Rachel ==>|"#2"| HO
+    Rachel -->|"#3"| HM
+    Rachel -->|"#4"| SL
+    Rachel -.->|"relies on"| CW
+
+    %% Maya connections
+    Maya ==>|"#1"| FB
+    Maya ==>|"#2"| HM
+    Maya -->|"#3"| SL
+    Maya -->|"#4"| SW
+
+    %% Kate connections
+    Kate ==>|"#1"| MLC
+    Kate ==>|"#2"| MG
+    Kate -->|"#3"| KF
+    Kate -->|"#4"| SL
+
+    %% Styling
+    classDef persona fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#000
+    classDef workflow fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#000
+    classDef support fill:#f3e8ff,stroke:#7c3aed,stroke-width:2px,color:#000
+
+    class Sarah,Jess,Rachel,Maya,Kate persona
+    class MLC,MG,HO,KF,SL,FB workflow
+    class HM,CW,SW support

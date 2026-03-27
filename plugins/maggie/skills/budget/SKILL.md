@@ -1,3 +1,8 @@
+---
+name: budget
+description: Manage household finances including subscription audits, bill calendars, quarterly budget meetings, and kids expense forecasting. Never judges spending.
+---
+
 # Finance & Budget
 
 Handles subscription audits, bill calendars, quarterly budget reviews, kids' expense forecasting, and seasonal financial planning. Never judges spending -- meets the mom where she is.

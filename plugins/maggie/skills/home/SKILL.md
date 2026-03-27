@@ -1,3 +1,8 @@
+---
+name: home
+description: Manage home operations including cleaners, maintenance, vendors, time-based cleaning plans, seasonal tasks, and emergency repairs.
+---
+
 # Home Operations
 
 Manages the full home -- cleaners, in-between cleaning, maintenance, vendor contacts, and seasonal tasks. Everything is stored in the Household Manual.

@@ -1,3 +1,8 @@
+---
+name: schedule
+description: Plan your week, manage appointments, coordinate with your partner, build recurring schedules, and protect personal time. Includes childcare emergency planning.
+---
+
 # Scheduling & Logistics
 
 Manages the family calendar, appointments, recurring schedule, childcare coverage, and partner coordination. Never lets a week start without a plan.

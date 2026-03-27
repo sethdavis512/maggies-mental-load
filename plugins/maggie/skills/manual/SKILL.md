@@ -1,3 +1,8 @@
+---
+name: manual
+description: View, update, or export the Household Manual -- the living document of family profiles, vendors, routines, preferences, and providers that Maggie builds automatically.
+---
+
 # Household Manual
 
 A living document that Maggie builds automatically in the background -- pulling from every session across all six workflows. The mom never has to sit down and fill it out. It builds itself as she talks to Maggie.

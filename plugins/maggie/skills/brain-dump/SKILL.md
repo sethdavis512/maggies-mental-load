@@ -1,3 +1,8 @@
+---
+name: brain-dump
+description: Brain dump everything on your mind. Maggie sorts, categorizes, and prioritizes into your Master Running List with urgency flags and next steps.
+---
+
 # Brain Dump -- Mental Load Capture
 
 The front door to every other workflow. This is where moms brain dump everything on their mind and Maggie sorts, prioritizes, and routes them to the right place. It maintains a living master list that never resets.

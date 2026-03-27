@@ -1,3 +1,8 @@
+---
+name: meals
+description: Plan meals for the week and generate grocery lists organized by store section. Handles picky eaters, health goals, fridge cleanout, and last-minute dinners.
+---
+
 # Meals & Grocery
 
 Handles weekly meal planning, lunch planning, and grocery list generation in a single session. Learns family preferences and builds around them.

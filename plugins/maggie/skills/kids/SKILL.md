@@ -1,3 +1,8 @@
+---
+name: kids
+description: Manage kids and family logistics including child profiles, milestones, activities, playdates, birthday parties, school calendars, and travel with kids.
+---
+
 # Kids & Family
 
 The most complex workflow. Covers everything from milestone tracking to playdate rotation to vacation planning with kids. Child profiles are built and maintained automatically.

@@ -1,0 +1,13 @@
+{
+  "name": "maggies-mental-load",
+  "owner": {
+    "name": "Seth"
+  },
+  "plugins": [
+    {
+      "name": "maggie",
+      "source": "./plugins/maggie",
+      "description": "Maggie's Mental Load management skills for Claude Code"
+    }
+  ]
+}

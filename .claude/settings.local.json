@@ -45,7 +45,13 @@
       "Bash(railway add:*)",
       "Bash(find /Users/seth/repositories/maggies-mental-load/node_modules/rivet-ui -name theme* -type f)",
       "Bash(npx --yes @mermaid-js/mermaid-cli --version)",
-      "Bash(mmdc:*)"
+      "Bash(mmdc:*)",
+      "Bash(mkdir -p /Users/seth/repositories/maggies-mental-load/plugins/maggie-plugin/.claude-plugin)",
+      "Bash(mkdir -p /Users/seth/repositories/maggies-mental-load/plugins/maggie-plugin/skills/brain-dump)",
+      "Bash(git remote:*)",
+      "Bash(for skill:*)",
+      "Bash(do cp:*)",
+      "Bash(done)"
     ]
   }
 }

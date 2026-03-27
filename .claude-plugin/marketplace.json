@@ -5,7 +5,7 @@
   },
   "plugins": [
     {
-      "name": "maggie",
+      "name": "mml",
       "source": "./plugins/maggie",
       "description": "Maggie's Mental Load management skills for Claude Code"
     }

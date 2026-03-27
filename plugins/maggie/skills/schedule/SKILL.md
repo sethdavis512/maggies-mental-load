@@ -1,5 +1,4 @@
 ---
-name: schedule
 description: Plan your week, manage appointments, coordinate with your partner, build recurring schedules, and protect personal time. Includes childcare emergency planning.
 ---
 

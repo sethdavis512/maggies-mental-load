@@ -1,5 +1,4 @@
 ---
-name: brain-dump
 description: Brain dump everything on your mind. Maggie sorts, categorizes, and prioritizes into your Master Running List with urgency flags and next steps.
 ---
 

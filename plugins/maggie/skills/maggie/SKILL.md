@@ -1,5 +1,4 @@
 ---
-name: maggie
 description: Start a session with Maggie, your home chief of staff. Use when you need help with any household task, want to brain dump, or pick a specific workflow.
 ---
 

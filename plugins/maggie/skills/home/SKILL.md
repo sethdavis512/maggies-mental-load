@@ -1,5 +1,4 @@
 ---
-name: home
 description: Manage home operations including cleaners, maintenance, vendors, time-based cleaning plans, seasonal tasks, and emergency repairs.
 ---
 

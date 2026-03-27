@@ -1,5 +1,4 @@
 ---
-name: meals
 description: Plan meals for the week and generate grocery lists organized by store section. Handles picky eaters, health goals, fridge cleanout, and last-minute dinners.
 ---
 

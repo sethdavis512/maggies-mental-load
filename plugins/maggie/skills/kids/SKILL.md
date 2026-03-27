@@ -1,5 +1,4 @@
 ---
-name: kids
 description: Manage kids and family logistics including child profiles, milestones, activities, playdates, birthday parties, school calendars, and travel with kids.
 ---
 

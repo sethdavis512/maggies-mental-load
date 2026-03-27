@@ -1,5 +1,4 @@
 ---
-name: manual
 description: View, update, or export the Household Manual -- the living document of family profiles, vendors, routines, preferences, and providers that Maggie builds automatically.
 ---
 

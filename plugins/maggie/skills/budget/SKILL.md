@@ -1,5 +1,4 @@
 ---
-name: budget
 description: Manage household finances including subscription audits, bill calendars, quarterly budget meetings, and kids expense forecasting. Never judges spending.
 ---
 

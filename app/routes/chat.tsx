@@ -13,14 +13,22 @@ import { getUserFromSession } from '~/models/session.server';
 import invariant from 'tiny-invariant';
 import {
     Form,
+    Link,
     NavLink,
     Outlet,
     redirect,
     useNavigation,
+    useParams,
     useSubmit,
 } from 'react-router';
-import { LoaderCircleIcon, PlusCircleIcon, Trash2Icon } from 'lucide-react';
+import {
+    ArrowLeftIcon,
+    LoaderCircleIcon,
+    PlusCircleIcon,
+    Trash2Icon,
+} from 'lucide-react';
 import { Badge, Button } from 'rivet-ui';
+import { cx } from 'cva.config';
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
@@ -92,6 +100,8 @@ function getThreadLabel(thread: {
 }
 
 export default function ChatRoute({ loaderData }: Route.ComponentProps) {
+    const { threadId } = useParams();
+    const hasActiveThread = Boolean(threadId);
     const navigation = useNavigation();
     const submit = useSubmit();
     const [isConfirmOpen, setConfirmOpen] = useState(false);
@@ -122,17 +132,27 @@ export default function ChatRoute({ loaderData }: Route.ComponentProps) {
                 name="description"
                 content="Capture thoughts, organize priorities, and turn overwhelm into actionable household plans."
             />
-            <Container className="flex min-h-0 grow flex-col gap-4 p-2 md:p-3">
-                <header className="border-kraft/10 flex flex-col gap-3 border-b pb-6 sm:flex-row sm:items-start sm:justify-between">
-                    <div className="space-y-1">
-                        <Badge variant="denim">Private workspace</Badge>
-                        <h1 className="font-display text-kraft text-3xl font-semibold">
+            <Container className="flex min-h-0 grow flex-col gap-2 p-1 md:gap-4 md:p-3">
+                <header className="border-kraft/10 flex items-center justify-between gap-2 border-b pb-2 md:pb-4">
+                    <div className="flex items-center gap-2">
+                        {hasActiveThread && (
+                            <Link
+                                to="/chat"
+                                className="text-kraft/70 hover:text-kraft flex items-center gap-1 text-sm transition-colors md:hidden"
+                            >
+                                <ArrowLeftIcon
+                                    aria-hidden="true"
+                                    className="h-4 w-4"
+                                />
+                                Threads
+                            </Link>
+                        )}
+                        <h1 className="font-display text-kraft text-lg font-semibold md:text-2xl">
                             Plan with Maggie
                         </h1>
-                        <p className="text-kraft/65 text-sm">
-                            Bring the mental load in here, then leave with clear
-                            next steps.
-                        </p>
+                    </div>
+                    <div className="hidden items-center gap-2 md:flex">
+                        <Badge variant="denim">Private workspace</Badge>
                     </div>
                     <Form method="POST">
                         <input type="hidden" name="intent" value="new-thread" />
@@ -153,12 +173,19 @@ export default function ChatRoute({ loaderData }: Route.ComponentProps) {
                                     className="h-4 w-4"
                                 />
                             )}
-                            <span className="ml-2">New thread</span>{' '}
+                            <span className="ml-1 hidden sm:inline">
+                                New thread
+                            </span>
                         </Button>
                     </Form>
                 </header>
-                <div className="grid min-h-0 grow grid-cols-1 grid-rows-[1fr_1fr] gap-4 md:grid-cols-12 md:grid-rows-[1fr]">
-                    <section className="border-kraft/12 bg-canvas rounded-box col-span-1 min-h-0 overflow-y-auto border p-3 md:col-span-5 lg:col-span-4">
+                <div className="flex min-h-0 grow flex-col gap-4 md:grid md:grid-cols-12 md:grid-rows-[1fr]">
+                    <section
+                        className={cx(
+                            'border-kraft/12 bg-canvas rounded-box min-h-0 overflow-y-auto border p-3 md:col-span-5 md:block lg:col-span-4',
+                            hasActiveThread ? 'hidden' : 'grow',
+                        )}
+                    >
                         <nav aria-label="Conversations">
                             <ul className="flex flex-col gap-4">
                                 {loaderData.threads &&
@@ -206,7 +233,12 @@ export default function ChatRoute({ loaderData }: Route.ComponentProps) {
                             </ul>
                         </nav>
                     </section>
-                    <div className="col-span-1 flex min-h-0 flex-col overflow-hidden md:col-span-7 lg:col-span-8">
+                    <div
+                        className={cx(
+                            'flex min-h-0 flex-col overflow-hidden md:col-span-7 md:flex lg:col-span-8',
+                            hasActiveThread ? 'grow' : 'hidden',
+                        )}
+                    >
                         <Outlet />
                     </div>
                 </div>

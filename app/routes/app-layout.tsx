@@ -288,7 +288,7 @@ export default function AppLayout({ loaderData }: Route.ComponentProps) {
             <main
                 id="main-content"
                 tabIndex={-1}
-                className="bg-canvas min-h-0 grow overflow-hidden py-4"
+                className="bg-canvas min-h-0 grow overflow-hidden py-1 md:py-4"
             >
                 <Container className="grid h-full grid-cols-1 gap-4 md:grid-cols-12">
                     <div className="border-kraft/12 bg-surface rounded-box hidden border md:col-span-4 md:block lg:col-span-3">
@@ -369,18 +369,18 @@ export default function AppLayout({ loaderData }: Route.ComponentProps) {
                             </nav>
                         </div>
                     </div>
-                    <div className="border-kraft/12 bg-surface rounded-box col-span-1 flex min-h-0 flex-col overflow-y-auto border md:col-span-8 lg:col-span-9">
-                        <div className="flex min-h-0 grow flex-col p-4 md:p-6">
+                    <div className="bg-surface col-span-1 flex min-h-0 flex-col overflow-y-auto md:border-kraft/12 md:rounded-box md:border md:col-span-8 lg:col-span-9">
+                        <div className="flex min-h-0 grow flex-col p-1 md:p-6">
                             <Outlet />
                         </div>
                     </div>
                 </Container>
             </main>
-            <footer className="border-kraft/10 bg-surface shrink-0 border-t py-4">
+            <footer className="border-kraft/10 bg-surface shrink-0 border-t py-2 md:py-4">
                 <Container className="px-4">
-                    <p className="text-kraft/65 text-sm">
-                        Built for real households, real calendars, and real-life
-                        chaos. Check that off your list. ✓
+                    <p className="text-kraft/45 text-xs">
+                        &copy; {new Date().getFullYear()} Maggie&apos;s
+                        Mental Load. All rights reserved.
                     </p>
                 </Container>
             </footer>

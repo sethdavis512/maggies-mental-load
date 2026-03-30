@@ -214,7 +214,7 @@ export default function ThreadRoute({
                 ref={messageRef}
                 aria-live="polite"
                 aria-busy={status === 'streaming'}
-                className="rounded-box bg-base-100 flex min-h-0 grow flex-col gap-4 overflow-y-auto p-4"
+                className="rounded-box bg-base-100 flex min-h-0 grow flex-col gap-3 overflow-y-auto px-2 py-1 sm:gap-4 sm:p-4"
             >
                 {/* Spacer pushes messages to the bottom. Using justify-end with
                    overflow-y-auto causes upward overflow that is unreachable
@@ -324,15 +324,15 @@ export default function ThreadRoute({
                     </div>
                 )}
             </div>
-            <div className="flex flex-col gap-1.5">
-                <div className="flex flex-wrap gap-1.5 px-1">
+            <div className="flex flex-col gap-2 px-2 pb-2 sm:gap-3 sm:px-4 sm:pb-4">
+                <div className="my-2 flex gap-2 overflow-x-auto px-1 md:flex-wrap">
                     {PRESET_MESSAGES.map(({ label, value }) => (
                         <Button
                             key={label}
                             type="button"
                             variant="ghost"
                             size="sm"
-                            className="rounded-full"
+                            className="shrink-0 rounded-full"
                             onClick={() => sendMessage({ text: value })}
                             disabled={status !== 'ready'}
                             title={value}
@@ -346,7 +346,7 @@ export default function ThreadRoute({
                         id="chat-message-input"
                         type="text"
                         aria-label="Message"
-                        className="grow"
+                        className="min-w-0 grow"
                         placeholder="What's on your mind right now?"
                         value={chatInput}
                         onChange={(e) => setChatInput(e.target.value)}
@@ -368,9 +368,9 @@ export default function ThreadRoute({
                     >
                         <StopCircleIcon
                             aria-hidden="true"
-                            className="h-6 w-6"
-                        />{' '}
-                        Pause
+                            className="h-5 w-5"
+                        />
+                        <span className="sr-only sm:not-sr-only">Pause</span>
                     </Button>
                     <Button
                         variant="primary"
@@ -380,9 +380,9 @@ export default function ThreadRoute({
                     >
                         <SendHorizonalIcon
                             aria-hidden="true"
-                            className="h-6 w-6"
-                        />{' '}
-                        Send
+                            className="h-5 w-5"
+                        />
+                        <span className="sr-only sm:not-sr-only">Send</span>
                     </Button>
                 </div>
             </div>

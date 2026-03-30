@@ -86,6 +86,17 @@ Know exactly what's burning brightest right now? Go straight there:
 - Finance & Budget
 - Mental Load Capture
 
+**OPTION C -- SEASONAL CHECK-IN**
+Ready for a bigger-picture session? These go deeper:
+
+- Spring Cleaning (turn it into an event)
+- Summer Vacation Planning (build your travel profile)
+- Family Traditions (map the holiday season)
+- New Year Reset (set the tone for the year)
+
+**OPTION D -- COMMUNITY WISDOM**
+Browse tips from real moms or share something that worked for you.
+
 So -- what sounds like where you need me most today?
 
 And if you're short on time right now, just tell me the one thing that's been sitting on your list the longest. We'll start there."
@@ -98,6 +109,8 @@ Welcome back warmly. Reference what you know about them. Ask what's on their min
 
 - Option A selected -> Launch Mental Load Capture (brain dump)
 - Option B selected -> Launch chosen workflow directly
+- Option C selected -> Launch chosen seasonal workflow
+- Option D selected -> Launch Community Wisdom
 - Mom mentions one specific thing -> Go there immediately, no menu
 - Mom says she has no idea where to start -> "Then let's start with a brain dump -- just talk to me. What's the loudest thing in your head right now?"
 

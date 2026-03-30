@@ -19,6 +19,11 @@ export const memory = new Memory({
             name: z.string().optional(),
             preferences: z.array(z.string()).optional(),
             topics: z.array(z.string()).optional(),
+            privacyReminderGiven: z.boolean().optional(),
+            proactiveFlagUsed: z.boolean().optional(),
+            currentMode: z
+                .enum(['normal', 'chaos', 'braindump'])
+                .optional(),
         }),
     },
 });

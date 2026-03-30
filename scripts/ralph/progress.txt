@@ -1,0 +1,168 @@
+# Ralph Progress Log
+Started: Sun Mar 29 22:33:17 CDT 2026
+---
+
+## Codebase Patterns
+- Prisma client is generated to `app/generated/prisma` and is gitignored; always run `bunx --bun prisma generate` after schema changes
+- Use `@@map("snake_case")` for table names in Prisma models
+- Use `@@index([userId])` on all user-owned models
+- All user-owned models use `onDelete: Cascade` on the User relation
+- Use String (not enum) for category fields; validate at application layer
+- Typecheck: `bunx tsc --noEmit` (react-router typegen may not be needed for non-route changes)
+- Database has drifted from migration history; `prisma migrate dev` won't work cleanly. Use `prisma db push` for schema sync if needed.
+- HouseholdPreference compound unique: use `where: { userId_key: { userId, key } }` for upsert/findUnique
+- VoltAgent tool pattern: `createTool({ name, description, parameters: z.object({}), execute: async (args, options) => {} })` with `options?.userId` for auth
+- Tool upsert without compound unique: use `findFirst({ where: { userId, name } })` then branch to create/update
+- Retriever pattern: extend `BaseRetriever`, super({ toolName, toolDescription }), implement `retrieve(input, options)` returning a string. Add to CombinedRetriever array in agents.ts.
+- Sidebar nav links must be added in TWO places in app-layout.tsx: desktop sidebar (main nav) and mobile DrawerContent component
+- Route layout files use `authMiddleware` export + `<Outlet />` -- child routes inherit auth
+
+---
+
+## 2026-03-29 - US-001
+- Schema already had all 5 models (Child, Provider, HouseholdPreference, FamilyMember, LoyaltyProgram) from prior work; committed the diff
+- User model relation fields added for all 5 models
+- Prisma client regenerated successfully
+- Files changed: prisma/schema.prisma
+- **Learnings for future iterations:**
+  - The 5 household models were already written in schema.prisma but uncommitted on this branch
+  - Database drift exists: migrations don't cover Task or household models. The DB was likely synced via `prisma db push`
+  - Generated Prisma client is gitignored, so it won't appear in commits
+---
+
+## 2026-03-29 - US-002
+- Created app/models/child.server.ts with CRUD functions: createChild, getChildrenByUserId, getChildById, updateChild, deleteChild
+- Followed existing patterns from note.server.ts and task.server.ts
+- Files changed: app/models/child.server.ts
+- **Learnings for future iterations:**
+  - Model files use `where: { id, userId }` compound filter for authorization (Prisma shorthand works since userId is indexed but not part of a unique constraint)
+  - `findFirst` is used instead of `findUnique` when the where clause includes a non-unique field (userId)
+  - `sizingJson` is typed as `unknown` in TypeScript and mapped to `Json?` in Prisma; pass `undefined` (not `null`) to skip updating it
+---
+
+## 2026-03-29 - US-003
+- Created app/models/provider.server.ts with CRUD + search functions: createProvider, getProvidersByUserId, getProvidersByCategory, updateProvider, deleteProvider, searchProviders
+- Followed same patterns as child.server.ts
+- Files changed: app/models/provider.server.ts
+- **Learnings for future iterations:**
+  - `searchProviders` uses Prisma `contains` with `mode: 'insensitive'` for case-insensitive search across name and category fields
+  - Provider ordering uses compound orderBy: `[{ category: 'asc' }, { name: 'asc' }]` to group by category
+  - No special handling needed for Provider fields (unlike Child's `sizingJson` which needs `?? undefined`)
+---
+
+## 2026-03-29 - US-004
+- Created app/models/preference.server.ts with: setPreference (upsert by userId+key), getPreferencesByUserId, getPreferencesByCategory, getPreference (by userId+key), deletePreference
+- Created app/models/family-member.server.ts with: createFamilyMember, getFamilyMembersByUserId, updateFamilyMember, deleteFamilyMember
+- Created app/models/loyalty-program.server.ts with: createLoyaltyProgram, getLoyaltyProgramsByUserId, updateLoyaltyProgram, deleteLoyaltyProgram
+- Files changed: app/models/preference.server.ts, app/models/family-member.server.ts, app/models/loyalty-program.server.ts
+- **Learnings for future iterations:**
+  - HouseholdPreference has a `@@unique([userId, key])` constraint, so `findUnique` works with `where: { userId_key: { userId, key } }` compound unique
+  - The upsert pattern for preferences uses `userId_key` as the where clause, creates with all fields, updates only value and category
+  - FamilyMember and LoyaltyProgram follow the standard CRUD pattern (same as child/provider) with no special fields
+---
+
+## 2026-03-29 - US-005
+- Created app/voltagent/tools/children.ts with upsertChildProfileTool and getChildProfilesTool
+- Registered both tools in agents.ts tools array
+- upsertChildProfileTool uses findFirst by userId+name to decide create vs update, rate limited 10/hr
+- getChildProfilesTool returns all children with key fields (id, name, birthday, allergies, interests, pediatrician)
+- Files changed: app/voltagent/tools/children.ts, app/voltagent/agents.ts
+- **Learnings for future iterations:**
+  - VoltAgent tools use `options?.userId` for auth context, with `invariant` to assert it exists
+  - Tool upsert pattern: use `prisma.model.findFirst({ where: { userId, name } })` then branch to create/update since there's no compound unique on userId+name for Child
+  - Rate limiting uses `rateLimit({ key, maxRequests, windowMs })` from `~/lib/rate-limit.server`
+  - Tool parameters use zod schemas with `.describe()` for AI-visible documentation
+---
+
+## 2026-03-29 - US-006
+- Created app/voltagent/tools/providers.ts with upsertProviderTool, getProvidersTool, and searchProvidersTool
+- Registered all three tools in agents.ts tools array
+- upsertProviderTool upserts by userId + name + category using findFirst, rate limited 10/hr
+- getProvidersTool supports optional category filter via getProvidersByCategory/getProvidersByUserId
+- searchProvidersTool delegates to searchProviders model function
+- Files changed: app/voltagent/tools/providers.ts, app/voltagent/agents.ts
+- **Learnings for future iterations:**
+  - Provider upsert uses three-field match (userId + name + category) unlike child which uses two (userId + name)
+  - `z.enum()` with `as const` array works well for tool parameter validation of fixed category sets
+  - Tools that delegate to existing model search functions (like searchProviders) don't need rate limiting since they're read-only
+---
+
+## 2026-03-29 - US-007
+- Created app/voltagent/tools/preferences.ts with setPreferenceTool and getPreferencesTool
+- Registered both tools in agents.ts tools array
+- setPreferenceTool upserts by userId+key using the setPreference model function (which uses Prisma upsert with compound unique), rate limited 20/hr
+- getPreferencesTool supports optional category filter
+- Files changed: app/voltagent/tools/preferences.ts, app/voltagent/agents.ts
+- **Learnings for future iterations:**
+  - Preferences use Prisma's native upsert (via compound unique userId_key) unlike children/providers which use findFirst+branch
+  - The setPreference model function handles the upsert logic, so the tool just delegates -- no need for manual findFirst pattern
+  - Rate limit for preferences is 20/hr (higher than child/provider at 10/hr) since users mention preferences more frequently
+---
+
+## 2026-03-29 - US-008
+- Created app/voltagent/tools/family.ts with upsertFamilyMemberTool and upsertLoyaltyProgramTool
+- Registered both tools in agents.ts tools array
+- upsertFamilyMemberTool upserts by userId + name using findFirst, no rate limiting (low-frequency write)
+- upsertLoyaltyProgramTool upserts by userId + programName using findFirst, no rate limiting
+- Files changed: app/voltagent/tools/family.ts, app/voltagent/agents.ts
+- **Learnings for future iterations:**
+  - FamilyMember and LoyaltyProgram tools follow the same findFirst upsert pattern as children (no compound unique constraint)
+  - Neither tool needs rate limiting per the acceptance criteria (only upsert tools with high expected frequency get rate limits)
+  - Tool file naming: group related tools in one file (family.ts covers both FamilyMember and LoyaltyProgram)
+---
+
+## 2026-03-29 - US-009
+- Created app/voltagent/retrievers/household-manual.ts with HouseholdManualRetriever
+- Retriever queries children, providers, and preferences in parallel via Promise.all
+- Formats data into markdown sections (Children, Providers, Preferences), skipping empty sections
+- Added HouseholdManualRetriever to CombinedRetriever array in agents.ts
+- Updated CombinedRetriever toolDescription to mention household manual
+- Files changed: app/voltagent/retrievers/household-manual.ts, app/voltagent/retrievers/combined.ts, app/voltagent/agents.ts
+- **Learnings for future iterations:**
+  - Retriever pattern: extend BaseRetriever, constructor calls super with toolName/toolDescription, implement retrieve(input, options)
+  - Retrievers get userId from options.userId (same as tools)
+  - CombinedRetriever just runs all retrievers in parallel and joins non-empty results
+  - HouseholdManualRetriever injects all data unconditionally (no query-based filtering) since it's a persistent profile
+---
+
+## 2026-03-30 - US-010
+- Added household routes to app/routes.ts: /household (layout), /household index, /household/children, /household/providers, /household/preferences
+- All nested under app-layout for auth middleware
+- Created stub route files for each: household.tsx (layout with Outlet), household-index.tsx, household-children.tsx, household-providers.tsx, household-preferences.tsx
+- Added BookOpenIcon "Household" nav link to both desktop sidebar and mobile drawer in app-layout.tsx
+- Files changed: app/routes.ts, app/routes/app-layout.tsx, app/routes/household.tsx, app/routes/household-index.tsx, app/routes/household-children.tsx, app/routes/household-providers.tsx, app/routes/household-preferences.tsx
+- **Learnings for future iterations:**
+  - Route layout files use `authMiddleware` and `<Outlet />` pattern -- child routes inherit the middleware
+  - Sidebar nav links appear in two places: desktop sidebar (in main layout) and mobile drawer (DrawerContent component) -- update both
+  - Used BookOpenIcon for "Household" since HomeIcon was already taken by "Home" link
+  - Stub route files need to exist for route config to compile -- create minimal placeholders for routes implemented in later stories
+---
+
+## 2026-03-30 - US-011
+- Built household manual overview page at /household (index route)
+- Loader fetches all 5 model types in parallel via Promise.all, returns first 3 of each plus counts
+- Page has 4 section cards: Family (children + family members combined), Providers, Preferences, Loyalty Programs
+- Each section shows count badge, preview entries, and "View all" link to detail page
+- Empty sections show friendly message linking to chat
+- Helper functions: formatAge (computes years/months from birthday), formatCategory (snake_case to Title Case)
+- Files changed: app/routes/household-index.tsx
+- **Learnings for future iterations:**
+  - Household index is nested under household.tsx layout which already has authMiddleware, but loader still needs getUserFromSession for the userId
+  - Use Promise.all to fetch all model data in parallel rather than sequential awaits
+  - Slice arrays in the loader to limit preview items rather than fetching with `take` (simpler and allows returning total count)
+  - Route types are auto-generated from route config -- import from `./+types/household-index`
+---
+
+## 2026-03-30 - US-012
+- Built child profiles list page at /household/children with loader, action (delete), and card display
+- Each child card shows name, age badge (computed from birthday), allergies, interests, pediatrician with lucide icons
+- Delete uses useFetcher with optimistic removal (same pattern as tasks.tsx)
+- Disabled "Add child" button placeholder at top for next story (US-013)
+- Empty state links to chat, back link to /household
+- Files changed: app/routes/household-children.tsx
+- **Learnings for future iterations:**
+  - Child cards use definition list (dl/dt/dd) for structured key-value display with icons
+  - useFetcher pattern for optimistic delete: check `fetcher.formData?.get('intent') === 'delete'`, return null if true
+  - formatAge handles edge case of < 1 month as "Newborn"
+  - Household child routes inherit auth from household.tsx layout middleware, but loader still needs getUserFromSession for userId
+---

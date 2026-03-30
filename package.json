@@ -38,6 +38,7 @@
         "@voltagent/postgres": "^2.1.2",
         "ai": "^6.0.134",
         "better-auth": "^1.5.6",
+        "composed-form": "^0.2.0",
         "cva": "^1.0.0-beta.4",
         "dotenv": "^17.3.1",
         "isbot": "^5.1.36",

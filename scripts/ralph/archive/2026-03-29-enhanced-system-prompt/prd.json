@@ -1,0 +1,306 @@
+{
+  "project": "MaggiesMentalLoad",
+  "branchName": "ralph/household-manual",
+  "description": "Household Manual - Persistent family profile with child profiles, providers, preferences, family members, and loyalty programs. Data layer, agent tools, retriever, and browsing/editing UI.",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Add five Household Manual Prisma models",
+      "description": "As a developer, I need database models for Child, Provider, HouseholdPreference, FamilyMember, and LoyaltyProgram so that household data can be persisted.",
+      "acceptanceCriteria": [
+        "Child model in schema.prisma: id (cuid), userId (relation to User), name (String), birthday (DateTime?), sizingJson (Json?), allergies (String?), interests (String?), pediatrician (String?), notes (String?), createdAt, updatedAt",
+        "Provider model: id (cuid), userId (relation to User), name (String), category (String), phone (String?), email (String?), notes (String?), cost (String?), frequency (String?), createdAt, updatedAt",
+        "HouseholdPreference model: id (cuid), userId (relation to User), key (String), value (String), category (String), createdAt, updatedAt. Unique constraint on [userId, key]",
+        "FamilyMember model: id (cuid), userId (relation to User), name (String), relationship (String), notes (String?), createdAt, updatedAt",
+        "LoyaltyProgram model: id (cuid), userId (relation to User), programName (String), memberNumber (String?), brand (String?), notes (String?), createdAt, updatedAt",
+        "All models have userId field with @relation to User model and onDelete: Cascade",
+        "Migration runs successfully with `bunx --bun prisma migrate dev`",
+        "Prisma client regenerated with `bunx --bun prisma generate`",
+        "Typecheck passes"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": "Use String for category fields rather than enums to keep the schema flexible. Category values will be validated at the application layer. Add @@index on userId for all models."
+    },
+    {
+      "id": "US-002",
+      "title": "Create Child data access layer",
+      "description": "As a developer, I need server-side functions to create, read, update, and delete child profiles.",
+      "acceptanceCriteria": [
+        "New file app/models/child.server.ts",
+        "Exports createChild(data: {name, birthday?, sizingJson?, allergies?, interests?, pediatrician?, notes?, userId})",
+        "Exports getChildrenByUserId(userId) returning children ordered by createdAt desc",
+        "Exports getChildById(id, userId) with userId check for authorization",
+        "Exports updateChild(id, userId, data) with userId check",
+        "Exports deleteChild(id, userId) with userId check",
+        "All functions use prisma from ~/lib/prisma",
+        "Typecheck passes"
+      ],
+      "priority": 2,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-003",
+      "title": "Create Provider data access layer",
+      "description": "As a developer, I need server-side functions for provider/vendor CRUD and search.",
+      "acceptanceCriteria": [
+        "New file app/models/provider.server.ts",
+        "Exports createProvider(data: {name, category, phone?, email?, notes?, cost?, frequency?, userId})",
+        "Exports getProvidersByUserId(userId) returning providers ordered by category then name",
+        "Exports getProvidersByCategory(userId, category) filtered by category string",
+        "Exports updateProvider(id, userId, data) with userId check",
+        "Exports deleteProvider(id, userId) with userId check",
+        "Exports searchProviders(userId, query) searching name and category (case-insensitive)",
+        "Typecheck passes"
+      ],
+      "priority": 3,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-004",
+      "title": "Create Preference, FamilyMember, and LoyaltyProgram data access layers",
+      "description": "As a developer, I need server-side functions for the remaining three household manual models.",
+      "acceptanceCriteria": [
+        "New file app/models/preference.server.ts with: setPreference (upsert by userId+key), getPreferencesByUserId, getPreferencesByCategory, getPreference (by userId+key), deletePreference",
+        "New file app/models/family-member.server.ts with: createFamilyMember, getFamilyMembersByUserId, updateFamilyMember(id, userId, data), deleteFamilyMember(id, userId)",
+        "New file app/models/loyalty-program.server.ts with: createLoyaltyProgram, getLoyaltyProgramsByUserId, updateLoyaltyProgram(id, userId, data), deleteLoyaltyProgram(id, userId)",
+        "setPreference uses prisma upsert with where: {userId_key: {userId, key}}",
+        "All functions include userId authorization checks",
+        "Typecheck passes"
+      ],
+      "priority": 4,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-005",
+      "title": "Create child profile agent tools",
+      "description": "As a user chatting with Maggie, I want her to save child details I mention so she remembers them.",
+      "acceptanceCriteria": [
+        "New file app/voltagent/tools/children.ts",
+        "Exports upsertChildProfileTool: accepts name (required string), birthday (optional ISO string), sizing (optional string), allergies (optional string), interests (optional string), pediatrician (optional string), notes (optional string). Creates new child or updates existing by matching userId + name.",
+        "Exports getChildProfilesTool: no required params, returns all children for the user with id, name, birthday, allergies, interests, pediatrician",
+        "Both tools extract userId from context (follow pattern in tools/notes.ts)",
+        "upsertChildProfileTool rate limited: 10 requests/hour per user",
+        "Both tools registered in agents.ts tools array",
+        "Typecheck passes"
+      ],
+      "priority": 5,
+      "passes": false,
+      "notes": "Follow the exact tool creation pattern from app/voltagent/tools/notes.ts for context extraction and rate limiting."
+    },
+    {
+      "id": "US-006",
+      "title": "Create provider agent tools",
+      "description": "As a user chatting with Maggie, I want her to save vendor contacts I mention so she can reference them later.",
+      "acceptanceCriteria": [
+        "New file app/voltagent/tools/providers.ts",
+        "Exports upsertProviderTool: accepts name (required), category (required, one of: cleaner, pest_control, lawn, babysitter, handyman, hvac, plumber, electrician, pet_services, pediatrician, specialist, other), phone, email, notes, cost, frequency. Upserts by userId + name + category.",
+        "Exports getProvidersTool: optional category filter, returns all providers for user",
+        "Exports searchProvidersTool: accepts query string, searches by name and category",
+        "upsertProviderTool rate limited: 10 requests/hour per user",
+        "All three tools registered in agents.ts tools array",
+        "Typecheck passes"
+      ],
+      "priority": 6,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-007",
+      "title": "Create preference agent tools",
+      "description": "As a user chatting with Maggie, I want her to remember my preferences so she never asks for something she's been told.",
+      "acceptanceCriteria": [
+        "New file app/voltagent/tools/preferences.ts",
+        "Exports setPreferenceTool: accepts key (required string), value (required string), category (required, one of: dietary, cleaning, travel, financial, calendar, grocery, general). Upserts by userId + key.",
+        "Exports getPreferencesTool: optional category filter, returns all preferences for user",
+        "setPreferenceTool rate limited: 20 requests/hour per user",
+        "Both tools registered in agents.ts tools array",
+        "Typecheck passes"
+      ],
+      "priority": 7,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-008",
+      "title": "Create family member and loyalty program agent tools",
+      "description": "As a developer, I need agent tools for the remaining household manual models.",
+      "acceptanceCriteria": [
+        "New file app/voltagent/tools/family.ts",
+        "Exports upsertFamilyMemberTool: accepts name (required), relationship (required), notes (optional). Upserts by userId + name.",
+        "Exports upsertLoyaltyProgramTool: accepts programName (required), memberNumber (optional), brand (optional), notes (optional). Upserts by userId + programName.",
+        "Both tools registered in agents.ts tools array",
+        "Typecheck passes"
+      ],
+      "priority": 8,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-009",
+      "title": "Create HouseholdManualRetriever",
+      "description": "As a developer, I need a retriever that injects relevant household data as context before each message so Maggie has family context.",
+      "acceptanceCriteria": [
+        "New file app/voltagent/retrievers/household-manual.ts implementing the retriever interface (follow pattern from retrievers/notes.ts)",
+        "Retriever queries child profiles, providers, and preferences for the current user",
+        "Formats data into a readable context block with sections: Children, Providers, Preferences",
+        "Only injects non-empty sections (skip sections with no data)",
+        "Integrated into CombinedRetriever in app/voltagent/retrievers/combined.ts (add to the array alongside NotesRetriever and TasksRetriever)",
+        "Updated in agents.ts retriever initialization",
+        "Typecheck passes"
+      ],
+      "priority": 9,
+      "passes": false,
+      "notes": "Start with injecting all household data. Selective topic-based filtering can be optimized later if token pressure becomes an issue."
+    },
+    {
+      "id": "US-010",
+      "title": "Add household routes to route config and sidebar",
+      "description": "As a developer, I need route configuration and navigation for the household manual pages.",
+      "acceptanceCriteria": [
+        "app/routes.ts includes routes: /household (index), /household/children, /household/providers, /household/preferences",
+        "All household routes are nested under the app-layout (authenticated)",
+        "Sidebar in app-layout.tsx includes 'Household' nav link pointing to /household with a home icon (from lucide-react)",
+        "Sidebar link uses the same navLinkClassName pattern as existing links",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 10,
+      "passes": false,
+      "notes": "Route files will be created in subsequent stories. This story just wires up the route config and nav link."
+    },
+    {
+      "id": "US-011",
+      "title": "Build household manual overview page",
+      "description": "As a user, I want to see everything Maggie knows about my household in one organized place.",
+      "acceptanceCriteria": [
+        "New route file for /household with loader that fetches children count, providers count, preferences count, family members count, loyalty programs count for the current user",
+        "Page shows sections: Family (children + family members), Providers, Preferences, Loyalty Programs",
+        "Each section shows count badge and preview of first 3 entries",
+        "Each section links to its detail page (/household/children, /household/providers, /household/preferences)",
+        "Empty sections show friendly message: 'Nothing here yet. Chat with Maggie to start building your household manual.'",
+        "Page title: 'Household Manual' with badge 'Your family profile'",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 11,
+      "passes": false,
+      "notes": "Follow the same page structure pattern as existing pages (notes.tsx, tasks.tsx): title, badge, subtitle, content cards."
+    },
+    {
+      "id": "US-012",
+      "title": "Build child profiles list page",
+      "description": "As a user, I want to view my children's profiles with key details so I can verify what Maggie knows.",
+      "acceptanceCriteria": [
+        "New route file for /household/children with loader that fetches all children for current user",
+        "Each child displayed as a card showing: name, age (computed from birthday if set, otherwise 'Age not set'), allergies, interests, pediatrician",
+        "Cards use the existing kraft/denim/canvas color palette",
+        "Delete button on each card with confirmation (use Form with intent='delete' pattern from tasks.tsx)",
+        "Action handler processes delete intent with childId",
+        "Empty state: 'No children added yet. Tell Maggie about your little ones in chat.'",
+        "'Add child' button visible at top of page (links to /household/children/new or opens inline -- defer wizard to next story, just show button placeholder for now)",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 12,
+      "passes": false,
+      "notes": "The composed-form wizard for add/edit is a separate story. This story focuses on the list display and delete action."
+    },
+    {
+      "id": "US-013",
+      "title": "Build child profile add/edit form",
+      "description": "As a user, I want to add or edit a child profile through a step-by-step form so nothing gets missed.",
+      "acceptanceCriteria": [
+        "Add child form accessible from /household/children page (modal, drawer, or inline section)",
+        "Uses composed-form with 4 steps: Step 1 'Basics' (name required, birthday optional date input), Step 2 'Health' (allergies, pediatrician), Step 3 'Sizing' (free text field for current sizes), Step 4 'Interests' (interests, notes)",
+        "Zod schema validates: name required max 100 chars, birthday optional valid date, all other fields optional strings",
+        "Form submits via action to create or update child record",
+        "Edit mode: clicking Edit on a child card opens the form pre-filled with existing data",
+        "Success redirects back to /household/children",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 13,
+      "passes": false,
+      "notes": "Import ComposedForm and Step from composed-form. Use useComposedFormContext() for next/back navigation. The form should feel warm: step titles like 'Tell me about your little one' not 'Enter child data'."
+    },
+    {
+      "id": "US-014",
+      "title": "Build providers list page with category filter",
+      "description": "As a user, I want to browse my vendor directory grouped by category so I can find contacts quickly.",
+      "acceptanceCriteria": [
+        "New route file for /household/providers with loader that fetches all providers for current user",
+        "Providers displayed grouped by category with category headers",
+        "Each provider card shows: name, category badge, phone, email, notes preview",
+        "Category filter buttons at top (All, then each category that has providers)",
+        "Delete button on each card with confirmation (Form with intent='delete')",
+        "Action handler processes delete with providerId",
+        "Empty state links to chat",
+        "'Add provider' button at top of page (placeholder for form in next story)",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 14,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-015",
+      "title": "Build provider add/edit form",
+      "description": "As a user, I want to add or edit a provider through a short form so I can manage my vendor directory.",
+      "acceptanceCriteria": [
+        "Add provider form accessible from /household/providers page",
+        "Uses composed-form with 2 steps: Step 1 'Contact' (name required, category required select, phone, email), Step 2 'Details' (cost, frequency, notes)",
+        "Category select options: cleaner, pest_control, lawn, babysitter, handyman, hvac, plumber, electrician, pet_services, pediatrician, specialist, other",
+        "Zod schema validates: name required max 200 chars, category required, all other fields optional",
+        "Form submits via action to create or update provider record",
+        "Edit mode: clicking Edit on a provider card opens form pre-filled",
+        "Success redirects back to /household/providers",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 15,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-016",
+      "title": "Build preferences page with inline editing",
+      "description": "As a user, I want to view and edit my household preferences so I can correct Maggie's assumptions.",
+      "acceptanceCriteria": [
+        "New route file for /household/preferences with loader that fetches all preferences grouped by category",
+        "Preferences displayed in category sections: Dietary, Cleaning, Travel, Financial, Calendar, Grocery, General",
+        "Each preference shows key and value as text, with an Edit button that toggles inline editing (input fields for key and value)",
+        "Save and Cancel buttons appear during inline edit",
+        "Delete button on each preference with confirmation",
+        "'Add preference' button opens a simple form with key, value, and category select fields",
+        "Action handler processes create, update, and delete intents",
+        "Empty categories are hidden. If no preferences at all, show empty state linking to chat",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 16,
+      "passes": false,
+      "notes": "No composed-form needed here. Preferences are simple key-value pairs. Use standard Form submissions with intent fields."
+    },
+    {
+      "id": "US-017",
+      "title": "Update system prompt to use household manual tools",
+      "description": "As a developer, I need the system prompt to instruct Maggie to automatically store family details using the new household manual tools.",
+      "acceptanceCriteria": [
+        "base.ts Tools & Capabilities section updated to reference household manual tools: upsert_child_profile, get_child_profiles, upsert_provider, get_providers, search_providers, set_preference, get_preferences, upsert_family_member, upsert_loyalty_program",
+        "Instructions tell Maggie: when a user mentions a child's name, age, birthday, allergy, or pediatrician, automatically store it using upsert_child_profile",
+        "Instructions tell Maggie: when a user mentions a vendor, cleaner, doctor, or service provider, store it using upsert_provider",
+        "Instructions tell Maggie: when a user states a preference (grocery store, dietary restriction, cleaning schedule), store it using set_preference",
+        "Instructions tell Maggie: never ask for information she has already been told (retriever provides context)",
+        "Typecheck passes"
+      ],
+      "priority": 17,
+      "passes": false,
+      "notes": "Only update the Tools & Capabilities section of base.ts. Do not modify other prompt sections."
+    }
+  ]
+}

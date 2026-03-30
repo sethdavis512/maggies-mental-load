@@ -66,7 +66,13 @@
       "Bash(curl:*)",
       "Bash(ls:*)",
       "Bash(git checkout:*)",
-      "Bash(git pull:*)"
+      "Bash(git pull:*)",
+      "Bash(grep -E \"\\\\.\\(tsx|ts\\)$\")",
+      "Bash(grep -E \"\\\\.\\(tsx|ts|md\\)$\")",
+      "Bash(find /Users/seth/repositories/maggies-mental-load -type f \\\\\\(-name *.md -o -name *.txt -o -name *.json \\\\\\) -path */docs* -o -path */README*)",
+      "Bash(bun pm:*)",
+      "Bash(npm view:*)",
+      "mcp__github__get_file_contents"
     ]
   }
 }

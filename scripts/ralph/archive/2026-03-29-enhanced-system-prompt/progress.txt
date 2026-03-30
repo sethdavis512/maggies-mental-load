@@ -1,0 +1,23 @@
+## Codebase Patterns
+- Working memory schema is defined inline in `app/voltagent/agents.ts` using Zod `.object()` with `.optional()` fields
+- All new schema fields should be `.optional()` to avoid breaking existing stored memory
+- Typecheck: `npx tsc --noEmit` works when `bun run typecheck` fails due to esbuild service issues
+- Backticks inside template literal prompts must be escaped with `\` to avoid TS parse errors
+- Prompt modules live in `app/voltagent/prompts/` as named exports of string constants, re-exported from `index.ts`
+- Data access layer: plain async functions in `app/models/*.server.ts`, no classes or ORM wrappers
+- Prisma client import: `import { prisma } from '~/lib/prisma'`
+- Prisma CLI: always use `bunx --bun prisma <command>`
+- Agent tools follow the pattern in `app/voltagent/tools/notes.ts` and `app/voltagent/tools/tasks.ts`
+- Tools are registered in the `tools` array in `app/voltagent/agents.ts`
+- Retrievers follow the pattern in `app/voltagent/retrievers/notes.ts` and `app/voltagent/retrievers/tasks.ts`
+- CombinedRetriever in `app/voltagent/retrievers/combined.ts` accepts an array of retrievers
+- Route config is in `app/routes.ts` using `@react-router/dev/routes`
+- UI components use rivet-ui (Button, Input, Alert, Badge, etc.), Tailwind CSS v4, DaisyUI v5
+- Route pages set `<title>` and `<meta>` inline in JSX
+- Import path alias: `~/` for app imports
+- Server-only modules use `.server.ts` suffix
+
+---
+
+# Progress Log
+

@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { createNoteTool, listNotesTool, searchNotesTool } from './tools/notes';
 import { createTaskTool, listTasksTool, completeTaskTool } from './tools/tasks';
 import { upsertChildProfileTool, getChildProfilesTool } from './tools/children';
+import { upsertProviderTool, getProvidersTool, searchProvidersTool } from './tools/providers';
 import { NotesRetriever } from './retrievers/notes';
 import { TasksRetriever } from './retrievers/tasks';
 import { CombinedRetriever } from './retrievers/combined';
@@ -66,6 +67,9 @@ export const agent = new Agent({
         completeTaskTool,
         upsertChildProfileTool,
         getChildProfilesTool,
+        upsertProviderTool,
+        getProvidersTool,
+        searchProvidersTool,
     ],
     retriever,
     memory,

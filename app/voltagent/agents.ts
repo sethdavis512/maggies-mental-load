@@ -7,6 +7,16 @@ import { NotesRetriever } from './retrievers/notes';
 import { TasksRetriever } from './retrievers/tasks';
 import { CombinedRetriever } from './retrievers/combined';
 import { env } from '~/lib/env.server';
+import {
+    basePrompt,
+    mealsPrompt,
+    homePrompt,
+    kidsPrompt,
+    schedulingPrompt,
+    financePrompt,
+    seasonalPrompt,
+    onboardingPrompt,
+} from './prompts';
 
 export const memory = new Memory({
     storage: new PostgreSQLMemoryAdapter({
@@ -35,8 +45,16 @@ const retriever = new CombinedRetriever([
 
 export const agent = new Agent({
     name: 'Maggie',
-    instructions:
-        'Your name is Maggie. You are a warm, highly organized friend and chief of staff helping working moms manage household mental load. You can create, list, and search notes. You can also manage the household task list: add tasks with a category and urgency, show what is pending, and mark items complete. When a user mentions something that needs doing, offer to add it to their list. When planning a week, pull up upcoming tasks and help prioritize. Always confirm with the user before marking tasks complete. You never reference AI, Claude, or underlying technology. You keep things efficient and actionable — always offer a quick path for time-constrained users. Close completed tasks with: Check that off your list. ✓',
+    instructions: [
+        basePrompt,
+        mealsPrompt,
+        homePrompt,
+        kidsPrompt,
+        schedulingPrompt,
+        financePrompt,
+        seasonalPrompt,
+        onboardingPrompt,
+    ].join('\n\n---\n\n'),
     model: 'anthropic/claude-3-haiku-20240307',
     tools: [
         createNoteTool,

@@ -10,13 +10,7 @@ import {
     WrenchIcon,
     XIcon,
 } from 'lucide-react';
-import {
-    Alert,
-    AlertDescription,
-    Badge,
-    Button,
-    Input as RivetInput,
-} from 'rivet-ui';
+import { Alert, AlertDescription, Badge, Button } from 'rivet-ui';
 import { ChatBubble } from '~/components/ChatBubble';
 import { Markdown } from '~/components/Markdown';
 import { NoteToolPart } from '~/components/NoteToolPart';
@@ -36,36 +30,36 @@ const transport = new DefaultChatTransport({
 
 const PRESET_MESSAGES = [
     {
-        label: 'Summarize',
-        value: 'Summarize our conversation so far as a concise bullet-point list.',
+        label: 'Brain dump',
+        value: 'I need to get everything out of my head. Let me brain dump and help me sort it into actionable next steps.',
     },
     {
-        label: 'Explain',
-        value: 'Explain your last response in simpler terms and include a concrete real-world example.',
+        label: 'Meal plan',
+        value: 'Help me plan meals for the week and build a grocery list organized by store section.',
     },
     {
-        label: 'Pros & Cons',
-        value: 'Give me a structured pros and cons list for the main topic we have been discussing.',
+        label: 'Home ops',
+        value: 'Walk me through what needs attention around the house right now, including cleaning, maintenance, and seasonal tasks.',
     },
     {
-        label: 'Next Steps',
-        value: 'Based on everything we have discussed, what are the most important next steps I should take?',
-    },
-    {
-        label: 'My Notes',
-        value: 'List all of my saved notes and give me a brief summary of what each one contains.',
-    },
-    {
-        label: 'Save Note',
-        value: 'Create a note capturing the key insights and action items from our conversation so far.',
+        label: 'Kids & family',
+        value: 'Help me stay on top of the kids -- appointments, activities, milestones, and anything coming up.',
     },
     {
         label: 'Plan my week',
-        value: 'Show me what is on my task list and help me plan and prioritize for the week ahead.',
+        value: 'Show me what is on my task list and help me plan and prioritize the week ahead.',
     },
     {
-        label: 'My Tasks',
-        value: 'List all of my current household tasks grouped by category.',
+        label: 'Budget check',
+        value: 'Help me review upcoming bills, subscriptions, and expenses so nothing catches me off guard.',
+    },
+    {
+        label: 'Household manual',
+        value: 'Show me my household manual -- vendors, providers, child profiles, and family preferences.',
+    },
+    {
+        label: 'Next steps',
+        value: 'Based on everything we have discussed, what are the most important next steps I should take?',
     },
 ];
 
@@ -148,6 +142,7 @@ export default function ThreadRoute({
 }: Route.ComponentProps) {
     const [chatInput, setChatInput] = useState('');
     const messageRef = useRef<HTMLDivElement>(null);
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const {
         messages,
@@ -176,6 +171,9 @@ export default function ThreadRoute({
         if (!chatInput.trim()) return;
         sendMessage({ text: chatInput });
         setChatInput('');
+        if (textareaRef.current) {
+            textareaRef.current.style.height = 'auto';
+        }
     };
 
     return (
@@ -341,15 +339,21 @@ export default function ThreadRoute({
                         </Button>
                     ))}
                 </div>
-                <div className="rounded-box border-base-300 bg-base-100 flex items-center gap-2 border p-2">
-                    <RivetInput
+                <div className="rounded-box border-base-300 bg-base-100 flex items-end gap-2 border p-2">
+                    <textarea
+                        ref={textareaRef}
                         id="chat-message-input"
-                        type="text"
                         aria-label="Message"
-                        className="min-w-0 grow"
+                        className="min-w-0 grow resize-none overflow-y-auto bg-transparent py-1 leading-normal outline-none"
+                        style={{ maxHeight: '10rem' }}
                         placeholder="What's on your mind right now?"
                         value={chatInput}
-                        onChange={(e) => setChatInput(e.target.value)}
+                        onChange={(e) => {
+                            setChatInput(e.target.value);
+                            const el = e.target;
+                            el.style.height = 'auto';
+                            el.style.height = `${el.scrollHeight}px`;
+                        }}
                         onKeyDown={(e) => {
                             if (e.key === 'Enter' && !e.shiftKey) {
                                 e.preventDefault();
@@ -357,6 +361,7 @@ export default function ThreadRoute({
                             }
                         }}
                         disabled={status !== 'ready'}
+                        rows={1}
                     />
                     <Button
                         variant="outline"

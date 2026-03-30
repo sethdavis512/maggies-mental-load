@@ -78,7 +78,17 @@ Do not make architectural decisions that block Tier 2+ integrations.
 - **UI Components**: `rivet-ui` package (Button, Input, Alert, Badge, Drawer, etc.)
 - **Styling**: Tailwind CSS v4 + DaisyUI v5 + CVA
 - **Runtime**: Bun (dev), Node 20 Alpine (Docker/prod)
+- **Hosting**: Railway (Dockerfile-based builds)
 - **Validation**: Zod + React Hook Form
+
+## Deployment
+
+- **Production**: Auto-deploys from `main` on Railway via GitHub integration.
+- **Staging**: Duplicate the Railway environment, point at a feature branch,
+  and provision separate databases. See `docs/railway-staging-environment.md`.
+- **Build**: Multi-stage Dockerfile (Bun install/build, Node 20 Alpine runtime).
+- **Required env vars**: `DATABASE_URL`, `VOLTAGENT_DATABASE_URL`,
+  `BETTER_AUTH_SECRET`, `BETTER_AUTH_BASE_URL`, `ANTHROPIC_API_KEY`.
 
 ## Architecture
 

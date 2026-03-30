@@ -51,7 +51,22 @@
       "Bash(git remote:*)",
       "Bash(for skill:*)",
       "Bash(do cp:*)",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(find /Users/seth/repositories/maggies-mental-load -type f -name *ralph* -o -name *prd*)",
+      "Bash(find /Users/seth/repositories/maggies-mental-load -type f \\\\\\(-name *.yml -o -name *.yaml -o -name Makefile -o -name .github \\\\\\))",
+      "Bash(grep -E \"\\\\.\\(yml|yaml|json|md\\)$|^d\")",
+      "Bash(xargs cat:*)",
+      "Bash(grep -r \"workflow\\\\|github\\\\|action\\\\|ci\\\\|cd\" /Users/seth/repositories/maggies-mental-load --include=*.md --include=*.json -l)",
+      "Bash(find /Users/seth/repositories/maggies-mental-load -maxdepth 2 \\\\\\(-name *.yml -o -name *.yaml \\\\\\) ! -path ./node_modules/* ! -path ./.react-router/* ! -path ./build/*)",
+      "Bash(cat /Users/seth/repositories/maggies-mental-load/prettier.config.*)",
+      "WebFetch(domain:docs.railway.com)",
+      "WebFetch(domain:railway.com)",
+      "Bash(find ~/.claude -type f \\\\\\(-name *batch* -o -name *.md -o -name *.yaml -o -name *.json \\\\\\))",
+      "Skill(agent-browser)",
+      "Bash(curl:*)",
+      "Bash(ls:*)",
+      "Bash(git checkout:*)",
+      "Bash(git pull:*)"
     ]
   }
 }

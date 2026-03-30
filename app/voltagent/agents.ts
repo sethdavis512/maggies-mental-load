@@ -3,6 +3,7 @@ import { PostgreSQLMemoryAdapter } from '@voltagent/postgres';
 import { z } from 'zod';
 import { createNoteTool, listNotesTool, searchNotesTool } from './tools/notes';
 import { createTaskTool, listTasksTool, completeTaskTool } from './tools/tasks';
+import { upsertChildProfileTool, getChildProfilesTool } from './tools/children';
 import { NotesRetriever } from './retrievers/notes';
 import { TasksRetriever } from './retrievers/tasks';
 import { CombinedRetriever } from './retrievers/combined';
@@ -63,6 +64,8 @@ export const agent = new Agent({
         createTaskTool,
         listTasksTool,
         completeTaskTool,
+        upsertChildProfileTool,
+        getChildProfilesTool,
     ],
     retriever,
     memory,

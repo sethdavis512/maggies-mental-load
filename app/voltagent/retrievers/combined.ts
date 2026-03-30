@@ -10,7 +10,8 @@ export class CombinedRetriever extends BaseRetriever {
     constructor(retrievers: BaseRetriever[]) {
         super({
             toolName: 'combined_context',
-            toolDescription: 'Search notes and tasks for relevant context.',
+            toolDescription:
+                'Search notes, tasks, and household manual for relevant context.',
         });
         this.retrievers = retrievers;
     }

@@ -9,6 +9,7 @@ import { setPreferenceTool, getPreferencesTool } from './tools/preferences';
 import { upsertFamilyMemberTool, upsertLoyaltyProgramTool } from './tools/family';
 import { NotesRetriever } from './retrievers/notes';
 import { TasksRetriever } from './retrievers/tasks';
+import { HouseholdManualRetriever } from './retrievers/household-manual';
 import { CombinedRetriever } from './retrievers/combined';
 import { env } from '~/lib/env.server';
 import {
@@ -45,6 +46,7 @@ export const memory = new Memory({
 const retriever = new CombinedRetriever([
     new NotesRetriever(),
     new TasksRetriever(),
+    new HouseholdManualRetriever(),
 ]);
 
 export const agent = new Agent({

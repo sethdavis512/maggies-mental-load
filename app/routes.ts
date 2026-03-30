@@ -23,6 +23,12 @@ export default [
         ]),
         route('/tasks', 'routes/tasks.tsx'),
         route('/notes', 'routes/notes.tsx'),
+        route('/household', 'routes/household.tsx', [
+            index('routes/household-index.tsx'),
+            route('children', 'routes/household-children.tsx'),
+            route('providers', 'routes/household-providers.tsx'),
+            route('preferences', 'routes/household-preferences.tsx'),
+        ]),
         route('/profile', 'routes/profile.tsx'),
     ]),
 ] satisfies RouteConfig;

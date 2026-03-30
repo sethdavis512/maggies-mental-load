@@ -13,6 +13,7 @@ import {
     useNavigation,
 } from 'react-router';
 import {
+    BookOpenIcon,
     HomeIcon,
     ListTodoIcon,
     LockIcon,
@@ -109,6 +110,19 @@ function DrawerContent({
                                     className="h-6 w-6"
                                 />
                                 Notes
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                to="/household"
+                                className={navLinkClassName}
+                                onClick={onClose}
+                            >
+                                <BookOpenIcon
+                                    aria-hidden="true"
+                                    className="h-6 w-6"
+                                />
+                                Household
                             </NavLink>
                         </li>
                         <li>
@@ -361,6 +375,18 @@ export default function AppLayout({ loaderData }: Route.ComponentProps) {
                                                         className="h-6 w-6"
                                                     />
                                                     Notes
+                                                </NavLink>
+                                            </li>
+                                            <li>
+                                                <NavLink
+                                                    to="/household"
+                                                    className={navLinkClassName}
+                                                >
+                                                    <BookOpenIcon
+                                                        aria-hidden="true"
+                                                        className="h-6 w-6"
+                                                    />
+                                                    Household
                                                 </NavLink>
                                             </li>
                                         </>

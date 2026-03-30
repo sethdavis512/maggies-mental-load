@@ -328,7 +328,7 @@ export default function ThreadRoute({
                         <Button
                             key={label}
                             type="button"
-                            variant="ghost"
+                            variant="outline"
                             size="sm"
                             className="shrink-0 rounded-full"
                             onClick={() => sendMessage({ text: value })}

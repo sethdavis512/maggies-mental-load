@@ -18,6 +18,7 @@
         "screenshots:capture": "tsx scripts/capture-screenshots.ts",
         "screenshots:post:linear": "tsx scripts/post-linear-screenshots.ts",
         "screenshots:capture-and-post": "bun run screenshots:capture && bun run screenshots:post:linear",
+        "staging:reset": "git fetch origin && git push origin origin/main:refs/heads/staging --force",
         "start": "react-router-serve ./build/server/index.js",
         "test": "playwright test",
         "typecheck": "react-router typegen && tsc",
